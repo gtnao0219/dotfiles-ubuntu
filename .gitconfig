@@ -1,0 +1,18 @@
+[core]
+  excludesfile = ~/.gitignore_global
+
+[user]
+  name  = naotaka nakane
+  email = n.nakane0219@gmail.com
+
+[ui]
+  ui = auto
+
+[ghq]
+  root = ~/dev/src
+
+[alias]
+  st = status
+  co = checkout
+  ci = commit
+
