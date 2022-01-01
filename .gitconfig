@@ -13,6 +13,18 @@
 
 [alias]
   st = status
+  sts = status -s
+  ft = fetch
+  ftp = fetch --prune
+  ad = add
+  c = commit
+  ci = commit -a
   co = checkout
-  ci = commit
+  cob = checkout -b
+  br = branch
+  bra = branch -a
+  sw = switch
+  swc = switch -c
+  df = diff
+  dfs = diff --staged
 
