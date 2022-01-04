@@ -29,7 +29,7 @@ download_dotfiles() {
   fi
   echo "\n"
   echo "Downloading dotfiles...\n"
-  local tarball="https://github.com/gtnao0219/dotfiles-ubuntu/archive/refs/heads/master.zip"
+  local tarball="https://github.com/gtnao0219/dotfiles-ubuntu/archive/refs/heads/master.tar.gz"
   if is_exists "curl"; then
     curl -L "${tarball}"
   elif is_exists "wget"; then
