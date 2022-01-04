@@ -5,6 +5,17 @@ is_exists() {
   return $?
 }
 
+yes_or_no() {
+  while true; do
+    read -p "${1} (y/n)" yn
+    case $yn in
+      [Yy]* ) return 0;;
+      [Nn]* ) return 1;;
+      * ) echo "Please answer yes or no.";;
+    esac
+  done
+}
+
 dotfiles_logo='
 @gtnao''s
    ██████╗  ██████╗ ████████╗███████╗██╗██╗     ███████╗███████╗
@@ -59,4 +70,5 @@ deploy_dotfiles() {
 echo "$dotfiles_logo"
 download_dotfiles
 deploy_dotfiles
+bash "${DOTPATH}/etc/ubuntu_install.sh"
 
