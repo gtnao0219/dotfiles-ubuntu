@@ -46,6 +46,17 @@ download_dotfiles() {
   echo "Download\n"
 }
 
+deploy_dotfiles() {
+  if [ ! -d "${DOTPATH}" ]; then
+    echo "${DOTPATH}: not found\n"
+    exit 1
+  fi
+  echo "\n"
+  echo "Deploying dotfiles...\n"
+  bash "${DOTPATH}/deploy.sh"
+}
+
 echo "$dotfiles_logo"
 download_dotfiles
+deploy_dotfiles
 
