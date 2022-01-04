@@ -10,8 +10,10 @@ Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'neoclide/coc.nvim'
+Plug 'dense-analysis/ale'
 call plug#end()
 
+set autoread
 set number
 set cursorline
 set smartindent
@@ -23,4 +25,9 @@ set shiftwidth=2
 let NERDTreeShowHidden=1
 map <C-n> :NERDTreeTabsToggle<CR>
 let g:nerdtree_tabs_open_on_console_startup=1
+
+let g:ale_fixers = {
+\ 'ruby': ['rubocop'],
+\}
+let g:ale_fix_on_save = 1
 
