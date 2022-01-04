@@ -1,45 +1,57 @@
-# Set up the prompt
+## Zinit
+if [[ ! -d $ZINIT_HOME/bin ]]; then
+  if whence git > /dev/null; then
+    git clone --depth 10 https://github.com/zdharma-continuum/zinit.git $ZINIT_HOME/bin
+  fi
+fi
+source $ZINIT_HOME/bin/zinit.zsh
 
-autoload -Uz promptinit
-promptinit
-prompt adam1
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit light woefe/git-prompt.zsh
 
-setopt histignorealldups sharehistory
 
-# Use emacs keybindings even if our EDITOR is set to vi
-bindkey -e
+## Prompt 
+ZSH_THEME_GIT_PROMPT_PREFIX=""
+ZSH_THEME_GIT_PROMPT_SUFFIX=""
+ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
+ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"
+ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[white]%} "
+ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="%{$fg[magenta]%}->%{$fg[cyan]%}"
+ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX=" "
+ZSH_THEME_GIT_PROMPT_BEHIND="%{$fg_bold[cyan]%}↓ "
+ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg_bold[cyan]%}↑ "
+ZSH_THEME_GIT_PROMPT_UNMERGED=" %{$fg[red]%}X:"
+ZSH_THEME_GIT_PROMPT_STAGED=" %{$fg[green]%}M:"
+ZSH_THEME_GIT_PROMPT_UNSTAGED=" %{$fg[red]%}M:"
+ZSH_THEME_GIT_PROMPT_UNTRACKED=" %{$fg[red]%}?:"
+ZSH_THEME_GIT_PROMPT_CLEAN=" %{$fg_bold[green]%}✔ "
+ZSH_THEME_GIT_PROMPT_STASHED=" %{$fg[blue]%}Stash:"
+ZSH_GIT_PROMPT_SHOW_UPSTREAM=full
+ZSH_GIT_PROMPT_SHOW_STASH=1
+ZSH_GIT_PROMPT_FORCE_BLANK=1
+PROMPT='%F{yellow}%~%f$(gitprompt)
+$ '
 
-# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
-HISTSIZE=1000
-SAVEHIST=1000
-HISTFILE=~/.zsh_history
 
-# Use modern completion system
-autoload -Uz compinit
-compinit
+# Autoload
+autoload -Uz add-zsh-hook
+autoload -Uz colors && colors
+autoload -Uz compinit && compinit
 
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*' completer _expand _complete _correct _approximate
-zstyle ':completion:*' format 'Completing %d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' menu select=2
-eval "$(dircolors -b)"
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-zstyle ':completion:*' menu select=long
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' use-compctl false
-zstyle ':completion:*' verbose true
 
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+## History 
+HISTFILE=${HOME}/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
 
 # [[ -z "$TMUX" && ! -z "$PS1" ]] && tmux
 
-## peco
+## Keybinds
+
+# Emacs-like keybind
 bindkey -e
+
+# peco
 _peco-src() {
   local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
   if [ -n "$selected_dir" ]; then
@@ -51,5 +63,25 @@ _peco-src() {
 zle -N _peco-src
 bindkey '^]' _peco-src
 
+
+## Aliases
 alias vim="nvim"
+
+
+## Setopts
+setopt always_last_prompt
+setopt append_history
+setopt auto_list
+setopt auto_menu
+setopt auto_cd
+setopt auto_param_keys
+setopt auto_param_slash
+setopt auto_pushd
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_no_store
+setopt hist_reduce_blanks
+setopt no_beep
+setopt pushd_ignore_dups
+setopt sharehistory
 

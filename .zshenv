@@ -1,6 +1,18 @@
+# Path
+typeset -gx -U path
+path=( \
+  /usr/local/bin(N-/) \
+  ~/bin(N-/) \
+  "$path[@]" \
+)
+
 # Editor
 export EDITOR=vim
+export VISUAL=vim
 export GIT_EDITOR="${EDITOR}"
+
+# Zinit
+export ZINIT_HOME="${HOME}/.zinit"
 
 # Golang
 export GOPATH="${HOME}/dev"
