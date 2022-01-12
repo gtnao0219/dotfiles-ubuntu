@@ -17,6 +17,7 @@ Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'dense-analysis/ale'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'rking/ag.vim'
 Plug 'vim-airline/vim-airline'
 call plug#end()
 
