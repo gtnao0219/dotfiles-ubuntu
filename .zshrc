@@ -73,6 +73,8 @@ if whence todo-txt > /dev/null; then
   alias todo="todo-txt"
 fi
 
+alias ls="ls --color"
+
 ## Setopts
 setopt always_last_prompt
 setopt append_history
