@@ -8,6 +8,23 @@
 [ui]
   ui = auto
 
+[init]
+  defaultBranch = main
+
+[diff]
+  indentHeuristic = true
+  compactionHeuristic = true
+  renames = true
+
+[commit]
+  verbose = true
+
+[fetch]
+  prune = true
+
+[push]
+  default = current
+
 [pager]
   log = diff-highlight | less
   show = diff-highlight | less
