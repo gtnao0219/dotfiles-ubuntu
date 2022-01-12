@@ -65,8 +65,13 @@ bindkey '^]' _peco-src
 
 
 ## Aliases
-alias vim="nvim"
+if whence nvim > /dev/null; then
+  alias vim="nvim"
+fi
 
+if whence todo-txt > /dev/null; then
+  alias todo="todo-txt"
+fi
 
 ## Setopts
 setopt always_last_prompt
