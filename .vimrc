@@ -7,8 +7,11 @@ endif
 call plug#begin()
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/fern-git-status.vim'
+Plug 'lambdalisue/nerdfont.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+Plug 'lambdalisue/glyph-palette.vim'
 Plug 'neoclide/coc.nvim'
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
@@ -31,9 +34,9 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 
-let NERDTreeShowHidden=1
-map <C-n> :NERDTreeTabsToggle<CR>
-let g:nerdtree_tabs_open_on_console_startup=1
+nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=40<CR>
+let g:fern#default_hidden=1
+let g:fern#renderer = 'nerdfont'
 
 let g:ale_fixers = {
 \ 'ruby': ['rubocop'],
@@ -44,3 +47,4 @@ let g:ale_fixers = {
 \}
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_use_local_config = 1
+
