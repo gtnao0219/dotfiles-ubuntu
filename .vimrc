@@ -7,6 +7,8 @@ endif
 call plug#begin()
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+Plug 'Yggdroot/indentLine'
+Plug 'tpope/vim-commentary'
 Plug 'lambdalisue/fern.vim'
 Plug 'lambdalisue/fern-git-status.vim'
 Plug 'lambdalisue/nerdfont.vim'
