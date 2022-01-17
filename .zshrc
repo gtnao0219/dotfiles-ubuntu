@@ -73,6 +73,10 @@ if whence todo-txt > /dev/null; then
   alias todo="todo-txt"
 fi
 
+if whence batcat > /dev/null; then
+  alias bat="batcat"
+fi
+
 alias ls="ls --color"
 
 ## Setopts

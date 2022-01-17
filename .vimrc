@@ -52,3 +52,7 @@ let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_use_local_config = 1
 let g:rustfmt_autosave = 1
 
+let g:fzf_preview_command = 'bat --color=always --style=plain'
+nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <C-f> :Rg<CR>
+
