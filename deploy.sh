@@ -1,13 +1,17 @@
-#!/bin/sh
+#!/bin/bash
 
-ln -sfn "${PWD}/.gitignore_global" "${HOME}/.gitignore_global"
+set -eu
+
+cd `dirname $0`
+
+ln -sfn "${PWD}/.dir_colors" "${HOME}/.dir_colors" 
 ln -sfn "${PWD}/.gitconfig" "${HOME}/.gitconfig"
-ln -sfn "${PWD}/.zshenv" "${HOME}/.zshenv"
-ln -sfn "${PWD}/.zshrc" "${HOME}/.zshrc"
-ln -sfn "${PWD}/.vimrc" "${HOME}/.vimrc"
+ln -sfn "${PWD}/.gitignore_global" "${HOME}/.gitignore_global"
+ln -sfn "${PWD}/.peco" "${HOME}/.peco"
 ln -sfn "${PWD}/.tigrc" "${HOME}/.tigrc"
 ln -sfn "${PWD}/.tmux.conf" "${HOME}/.tmux.conf"
-ln -sfn "${PWD}/.peco" "${HOME}/.peco"
-mkdir -p ~/.config/nvim
+mkdir -p "${HOME}/.config/nvim"
 ln -sfn "${PWD}/.vimrc" "${HOME}/.config/nvim/init.vim"
+ln -sfn "${PWD}/.zshenv" "${HOME}/.zshenv"
+ln -sfn "${PWD}/.zshrc" "${HOME}/.zshrc"
 
