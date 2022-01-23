@@ -47,16 +47,20 @@ let g:coc_global_extensions = [
 \, 'coc-css'
 \, 'coc-tsserver'
 \, 'coc-solargraph'
-\, 'coc-python'
+\, 'coc-jedi'
 \, 'coc-rls'
 \ ]
 
+let g:ale_linters = {
+\ 'python': ['flake8'],
+\}
 let g:ale_fixers = {
 \ 'ruby': ['rubocop'],
 \ 'typescript': ['prettier'],
 \ 'typescriptreact': ['prettier'],
 \ 'javascript': ['prettier'],
 \ 'javascriptreact': ['prettier'],
+\ 'python': ['autopep8', 'black', 'isort'],
 \}
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_use_local_config = 1

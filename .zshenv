@@ -24,6 +24,12 @@ export PATH="${HOME}/.rbenv/bin:${PATH}"
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 export PATH="/usr/local/bin/rubocop-daemon-wrapper:${PATH}"
 
+# Python 
+export PYENV_ROOT="${HOME}/.pyenv"
+export PATH="${PYENV_ROOT}/bin:${PATH}"
+if which pyenv > /dev/null; then eval "$(pyenv init --path)"; fi
+export PATH="${HOME}/.local/bin:${PATH}"
+
 # Rust
 export PATH="${HOME}/.cargo/bin:${PATH}"
 if [ -e "${HOME}/.cargo/env" ]; then
