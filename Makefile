@@ -3,6 +3,9 @@
 install_node: ## Install nodejs
 	./scripts/node/install.sh
 
+install_go: ## Install golang
+	./scripts/go/install.sh
+
 install_ruby: ## Install ruby by rbenv
 	./scripts/ruby/install.sh
 
