@@ -25,6 +25,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'rking/ag.vim'
 Plug 'vim-airline/vim-airline'
+Plug 'sainnhe/gruvbox-material'
 call plug#end()
 
 set autoread
@@ -36,6 +37,8 @@ set showmatch
 set expandtab
 set tabstop=2
 set shiftwidth=2
+
+colorscheme gruvbox-material
 
 nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=40<CR>
 let g:fern#default_hidden=1
