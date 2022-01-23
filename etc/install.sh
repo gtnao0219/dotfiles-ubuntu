@@ -64,11 +64,19 @@ deploy_dotfiles() {
   fi
   echo "\n"
   echo "Deploying dotfiles...\n"
+  cd ${DOTPATH}
   bash "${DOTPATH}/deploy.sh"
 }
 
 echo "$dotfiles_logo"
 download_dotfiles
 deploy_dotfiles
-bash "${DOTPATH}/etc/ubuntu_install.sh"
+bash "${DOTPATH}/scripts/install_essentials.sh"
+bash "${DOTPATH}/scripts/install_tools.sh"
+
+if yes_or_no "Do you wish to change default shell to zsh"; then
+  sudo chsh -s $(which zsh) "${USER}"
+  exec $SHELL -l
+fi
+
 
