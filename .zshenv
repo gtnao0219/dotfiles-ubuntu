@@ -35,4 +35,3 @@ export PATH="${HOME}/.cargo/bin:${PATH}"
 if [ -e "${HOME}/.cargo/env" ]; then
   source "${HOME}/.cargo/env"
 fi
-. "$HOME/.cargo/env"

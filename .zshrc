@@ -44,8 +44,6 @@ HISTFILE=${HOME}/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 
-# [[ -z "$TMUX" && ! -z "$PS1" ]] && tmux
-
 ## Keybinds
 
 # Emacs-like keybind
