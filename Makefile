@@ -3,6 +3,9 @@
 install_node: ## Install nodejs
 	./scripts/node/install.sh
 
+install_ruby: ## Install ruby by rbenv
+	./scripts/ruby/install.sh
+
 help: ## Self-documented Makefile
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 		| sort \
