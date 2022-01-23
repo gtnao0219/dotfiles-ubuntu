@@ -41,6 +41,16 @@ nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=40<CR>
 let g:fern#default_hidden=1
 let g:fern#renderer = 'nerdfont'
 
+let g:coc_global_extensions = [
+\  'coc-json'
+\, 'coc-html'
+\, 'coc-css'
+\, 'coc-tsserver'
+\, 'coc-solargraph'
+\, 'coc-python'
+\, 'coc-rls'
+\ ]
+
 let g:ale_fixers = {
 \ 'ruby': ['rubocop'],
 \ 'typescript': ['prettier'],
