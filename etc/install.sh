@@ -74,6 +74,10 @@ deploy_dotfiles
 bash "${DOTPATH}/scripts/install_essentials.sh"
 bash "${DOTPATH}/scripts/install_tools.sh"
 
+make install_node
+nvim -E +PlugInstall +qall
+nvim -E +"call coc#util#install()" +qall
+
 if yes_or_no "Do you wish to change default shell to zsh"; then
   sudo chsh -s $(which zsh) "${USER}"
   exec $SHELL -l
