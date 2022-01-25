@@ -9,7 +9,11 @@ path=( \
 # Editor
 export EDITOR=vim
 export VISUAL=vim
-export GIT_EDITOR="${EDITOR}"
+if whence nvim > /dev/null; then
+  export GIT_EDITOR=nvim
+else
+  export GIT_EDITOR=vim
+fi
 
 # Zinit
 export ZINIT_HOME="${HOME}/.zinit"
