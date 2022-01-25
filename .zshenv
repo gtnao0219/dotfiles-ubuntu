@@ -41,3 +41,4 @@ if [ -e "${HOME}/.cargo/env" ]; then
 fi
 
 export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
+

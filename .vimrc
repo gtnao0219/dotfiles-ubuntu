@@ -23,7 +23,6 @@ Plug 'rust-lang/rust.vim'
 Plug 'dense-analysis/ale'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'rking/ag.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'sainnhe/gruvbox-material'
 call plug#end()
@@ -107,5 +106,6 @@ let g:rustfmt_autosave = 1
 
 let g:fzf_preview_command = 'bat --color=always --style=plain'
 nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <C-g> :GFiles?<CR>
 nnoremap <silent> <C-f> :Rg<CR>
 
