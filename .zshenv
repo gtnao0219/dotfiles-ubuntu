@@ -39,3 +39,5 @@ export PATH="${HOME}/.cargo/bin:${PATH}"
 if [ -e "${HOME}/.cargo/env" ]; then
   source "${HOME}/.cargo/env"
 fi
+
+export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'

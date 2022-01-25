@@ -75,6 +75,10 @@ if whence batcat > /dev/null; then
   alias bat="batcat"
 fi
 
+if whence fdfind > /dev/null; then
+  alias fd="fdfind"
+fi
+
 alias ls="ls --color"
 
 ## Setopts
