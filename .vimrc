@@ -94,10 +94,10 @@ let g:ale_linters = {
 \}
 let g:ale_fixers = {
 \ 'ruby': ['rubocop'],
-\ 'typescript': ['prettier'],
-\ 'typescriptreact': ['prettier'],
-\ 'javascript': ['prettier'],
-\ 'javascriptreact': ['prettier'],
+\ 'typescript': ['prettier', 'eslint'],
+\ 'typescriptreact': ['prettier', 'eslint'],
+\ 'javascript': ['prettier', 'eslint'],
+\ 'javascriptreact': ['prettier', 'eslint'],
 \ 'python': ['autopep8', 'black', 'isort'],
 \}
 let g:ale_fix_on_save = 1
