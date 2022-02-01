@@ -12,6 +12,7 @@ ln -sfn "${PWD}/.tigrc" "${HOME}/.tigrc"
 ln -sfn "${PWD}/.tmux.conf" "${HOME}/.tmux.conf"
 mkdir -p "${HOME}/.config/nvim"
 ln -sfn "${PWD}/.vimrc" "${HOME}/.config/nvim/init.vim"
+ln -sfn "${PWD}/coc-settings.json" "${HOME}/.config/nvim/coc-settings.json"
 ln -sfn "${PWD}/.zshenv" "${HOME}/.zshenv"
 ln -sfn "${PWD}/.zshrc" "${HOME}/.zshrc"
 

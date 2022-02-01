@@ -18,6 +18,10 @@ export GIT_EDITOR=${EDITOR}
 # Zinit
 export ZINIT_HOME="${HOME}/.zinit"
 
+# Linux Homebrew
+test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
 # Golang
 export GOPATH="${HOME}/dev"
 export PATH="/usr/local/go/bin:${PATH}"
