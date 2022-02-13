@@ -123,10 +123,6 @@ let g:python3_host_prog = system('echo -n $(which python3)')
 let g:mapleader = "\<Space>"
 nnoremap <Leader> <Nop>
 xnoremap <Leader> <Nop>
-nnoremap <Plug>(dev) <Nop>
-xnoremap <Plug>(dev) <Nop>
-nmap , <Plug>(dev)
-xmap , <Plug>(dev)
 " }}}2 
 
 " Replace {{{2 
@@ -176,23 +172,23 @@ cnoremap <C-h> <BS>
 " }}}2 
 
 " Resize window {{{2 
-nnoremap <silent> <Left> <Cmd>vertical resize -5<Cr>
-nnoremap <silent> <Right> <Cmd>vertical resize +5<Cr>
-nnoremap <silent> <Up> <Cmd>resize -5<Cr>
-nnoremap <silent> <Down> <Cmd>resize +5<Cr>
+nnoremap <silent> <Leader><Left> <Cmd>vertical resize -5<Cr>
+nnoremap <silent> <Leader><Right> <Cmd>vertical resize +5<Cr>
+nnoremap <silent> <Leader><Up> <Cmd>resize -5<Cr>
+nnoremap <silent> <Leader><Down> <Cmd>resize +5<Cr>
 " }}}2 
 
 " Insert empty lines {{{2 
-nnoremap <Space>o :<C-u>for i in range(v:count1) \| call append(line('.'), '') \| endfor<CR>
-nnoremap <Space>O :<C-u>for i in range(v:count1) \| call append(line('.')-1, '') \| endfor<CR>
+nnoremap <Leader>o :<C-u>for i in range(v:count1) \| call append(line('.'), '') \| endfor<CR>
+nnoremap <Leader>O :<C-u>for i in range(v:count1) \| call append(line('.')-1, '') \| endfor<CR>
 " }}}2 
 
 " Search & Replace {{{2 
 nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR>
-nnoremap gs :<C-u>%s///g<Left><Left><Left>
-nnoremap gS :<C-u>%s///gc<Left><Left><Left><Left>
-vnoremap gs :s///g<Left><Left><Left>
-vnoremap gS :s///gc<Left><Left><Left><Left>
+nnoremap <Leader>gs :<C-u>%s///g<Left><Left><Left>
+nnoremap <Leader>gS :<C-u>%s///gc<Left><Left><Left><Left>
+vnoremap <Leader>gs :s///g<Left><Left><Left>
+vnoremap <Leader>gS :s///gc<Left><Left><Left><Left>
 " }}}2 
 
 " }}}1
@@ -276,25 +272,25 @@ if s:plug.is_installed("coc.nvim")
 
   inoremap <silent><expr> <C-c> coc#refresh()
   inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-  nnoremap <silent> <Plug>(dev)K <Cmd>call <SID>show_documentation()<CR>
-  nmap <silent> <Plug>(dev)dp <Plug>(coc-diagnostic-prev)
-  nmap <silent> <Plug>(dev)dn <Plug>(coc-diagnostic-next)
-  nmap <silent> <Plug>(dev)d <Plug>(coc-definition)
-  nmap <silent> <Plug>(dev)i <Plug>(coc-implementation)
-  nmap <silent> <Plug>(dev)rf <Plug>(coc-references)
-  nmap <silent> <Plug>(dev)rn <Plug>(coc-rename)
-  nmap <silent> <Plug>(dev)t <Plug>(coc-type-definition)
-  nmap <silent> <Plug>(dev)f <Plug>(coc-format)
-  nmap <silent> <Plug>(dev)gp <Plug>(coc-git-prevchunk)
-  nmap <silent> <Plug>(dev)gn <Plug>(coc-git-nextchunk)
+  nnoremap <silent> <Leader>K <Cmd>call <SID>show_documentation()<CR>
+  nmap <silent> <Leader>dp <Plug>(coc-diagnostic-prev)
+  nmap <silent> <Leader>dn <Plug>(coc-diagnostic-next)
+  nmap <silent> <Leader>df <Plug>(coc-definition)
+  nmap <silent> <Leader>im <Plug>(coc-implementation)
+  nmap <silent> <Leader>rf <Plug>(coc-references)
+  nmap <silent> <Leader>ty <Plug>(coc-type-definition)
+  nmap <silent> <Leader>rn <Plug>(coc-rename)
+  nmap <silent> <Leader>fm <Plug>(coc-format)
+  nmap <silent> <Leader>gp <Plug>(coc-git-prevchunk)
+  nmap <silent> <Leader>gn <Plug>(coc-git-nextchunk)
 
   nnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
   nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
   inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
   inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
 
-  nmap <Plug>(dev)ca <Plug>(coc-calc-result-append)
-  nmap <Plug>(dev)cr <Plug>(coc-calc-result-replace)
+  nmap <Leader>ca <Plug>(coc-calc-result-append)
+  nmap <Leader>cr <Plug>(coc-calc-result-replace)
   
   function s:show_documentation() abort
     if index(['vim', 'help'], &filetype) >= 0
@@ -355,9 +351,9 @@ endif
 " fzf {{{2
 if s:plug.is_installed("fzf.vim")
   let g:fzf_preview_command = 'bat --color=always --style=plain'
-  nnoremap <silent> <Plug>(dev)<C-p> :Files<CR>
-  nnoremap <silent> <Plug>(dev)<C-g> :GFiles?<CR>
-  nnoremap <silent> <Plug>(dev)<C-f> :Rg<CR>
+  nnoremap <silent> <Leader>P :Files<CR>
+  nnoremap <silent> <Leader>G :GFiles?<CR>
+  nnoremap <silent> <Leader>F :Rg<CR>
 endif
 " }}}2
 
