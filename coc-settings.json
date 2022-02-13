@@ -2,7 +2,9 @@
 	"languageserver": {
 		"terraform": {
 			"command": "terraform-ls",
-			"args": ["serve"],
+			"args": [
+				"serve"
+			],
 			"filetypes": [
 				"terraform",
 				"tf"
@@ -10,6 +12,13 @@
 			"initializationOptions": {},
 			"settings": {}
 		}
-	}
+	},
+  "diagnostic.floatConfig": {
+    "border": true
+  },
+  "diagnostic.messageDelay": 0,
+  "diagnostic.errorSign": "",
+  "diagnostic.warningSign": "",
+  "diagnostic.infoSign": "",
+  "diagnostic.hintSign": ""
 }
-
