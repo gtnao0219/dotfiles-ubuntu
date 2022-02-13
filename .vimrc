@@ -172,10 +172,10 @@ cnoremap <C-h> <BS>
 " }}}2 
 
 " Resize window {{{2 
-nnoremap <silent> <Leader><Left> <Cmd>vertical resize -5<Cr>
-nnoremap <silent> <Leader><Right> <Cmd>vertical resize +5<Cr>
-nnoremap <silent> <Leader><Up> <Cmd>resize -5<Cr>
-nnoremap <silent> <Leader><Down> <Cmd>resize +5<Cr>
+nnoremap <silent> <Left> <Cmd>vertical resize -5<Cr>
+nnoremap <silent> <Right> <Cmd>vertical resize +5<Cr>
+nnoremap <silent> <Up> <Cmd>resize -5<Cr>
+nnoremap <silent> <Down> <Cmd>resize +5<Cr>
 " }}}2 
 
 " Insert empty lines {{{2 
