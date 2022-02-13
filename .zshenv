@@ -15,6 +15,9 @@ fi
 export VISUAL=${EDITOR}
 export GIT_EDITOR=${EDITOR}
 
+# Vim
+export MYVIMRC="${HOME}/.vimrc"
+
 # Zinit
 export ZINIT_HOME="${HOME}/.zinit"
 

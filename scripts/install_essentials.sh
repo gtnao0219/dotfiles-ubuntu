@@ -7,6 +7,7 @@ declare -a packages=( \
   vim zsh git curl \
   unzip bzip2 gzip tar \
   ssh \
+  jq \
 )
 sudo apt update
 sudo apt install -y ${packages[@]}
