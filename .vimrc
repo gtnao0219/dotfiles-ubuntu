@@ -19,6 +19,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'nvim-treesitter/nvim-treesitter'
 " }}}3
 
 " Filer Languages {{{3
@@ -303,6 +304,19 @@ if s:plug.is_installed("coc.nvim")
   autocmd CursorHold * silent call CocActionAsync('highlight')
 endif
 " }}}2 
+
+" treesitter {{{2
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true
+  },
+  ensure_installed = 'all'
+}
+EOF
+
+" }}}2
 
 " which-key {{{2
 if s:plug.is_installed("vim-which-key")
