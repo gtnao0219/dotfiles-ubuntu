@@ -42,7 +42,7 @@ Plug 'lambdalisue/glyph-palette.vim'
 " }}}3
 
 " Textobj & Operator {{{3
-Plug 'tpope/vim-surround'
+Plug 'machakann/vim-sandwich'
 Plug 'machakann/vim-swap'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-operator-user'
@@ -66,6 +66,7 @@ Plug 'lambdalisue/gina.vim'
 " }}}3
 
 " Utils {{{3
+Plug 'cohama/lexima.vim'
 Plug 'tyru/vim-altercmd'
 Plug 'tpope/vim-commentary'
 Plug 'thinca/vim-quickrun'
@@ -368,6 +369,24 @@ if s:plug.is_installed("fzf.vim")
   nnoremap <silent> <Leader>P :Files<CR>
   nnoremap <silent> <Leader>G :GFiles?<CR>
   nnoremap <silent> <Leader>F :Rg<CR>
+endif
+" }}}2
+
+" sandwich {{{2
+if s:plug.is_installed("vim-sandwich")
+  let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
+  let g:sandwich#recipes += [
+    \ {
+    \   'buns':     ['${', '}'],
+    \   'input':    ['$'],
+    \   'filetype': ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
+    \ },
+    \ {
+    \   'buns':     ['#{', '}'],
+    \   'input':    ['#'],
+    \   'filetype': ['ruby'],
+    \ }
+  \]
 endif
 " }}}2
 
