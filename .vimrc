@@ -67,6 +67,7 @@ Plug 'lambdalisue/gina.vim'
 
 " Utils {{{3
 Plug 'cohama/lexima.vim'
+Plug 'farmergreg/vim-lastplace'
 Plug 'tyru/vim-altercmd'
 Plug 'tpope/vim-commentary'
 Plug 'thinca/vim-quickrun'
