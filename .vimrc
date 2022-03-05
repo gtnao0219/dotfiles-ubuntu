@@ -68,6 +68,11 @@ Plug 'lambdalisue/gina.vim'
 " Utils {{{3
 Plug 'cohama/lexima.vim'
 Plug 'farmergreg/vim-lastplace'
+Plug 'AndrewRadev/linediff.vim'
+Plug 'gelguy/wilder.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'folke/todo-comments.nvim'
+Plug 'norcalli/nvim-colorizer.lua'
 Plug 'tyru/vim-altercmd'
 Plug 'tpope/vim-commentary'
 Plug 'thinca/vim-quickrun'
@@ -76,8 +81,11 @@ Plug 'LeafCage/yankround.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'sirver/ultisnips'
 Plug 'liuchengxu/vim-which-key'
+Plug 'aiya000/aho-bakaup.vim'
 Plug 'vim-jp/vimdoc-ja'
+Plug 'rcarriga/nvim-notify'
 " }}}3
+
 
 call plug#end()
 
@@ -112,6 +120,8 @@ set ignorecase
 set smartindent
 
 set whichwrap=h,l
+
+set termguicolors
 
 filetype plugin indent on
 
@@ -256,6 +266,7 @@ if s:plug.is_installed("coc.nvim")
   \, 'coc-go'
   \, 'coc-highlight'
   \, 'coc-html'
+  \, 'coc-java'
   \, 'coc-jedi'
   \, 'coc-json'
   \, 'coc-lists'
@@ -391,6 +402,13 @@ if s:plug.is_installed("vim-sandwich")
 endif
 " }}}2
 
+" aho-backup {{{2
+if s:plug.is_installed("aho-bakaup.vim")
+  let g:bakaup_auto_backup = 1
+  let g:bakaup_backup_dir  = expand('~/.cache/vim/backup')
+endif
+" }}}2
+
 " undotree {{{2
 if s:plug.is_installed("undotree")
   nnoremap <silent> <Leader>u <Cmd>UndotreeToggle<CR>
@@ -412,12 +430,47 @@ if s:plug.is_installed("vim-airline-themes")
 endif
 " }}}2
 
+" wilder {{{2
+if s:plug.is_installed("wilder.nvim")
+  call wilder#setup({'modes': [':', '/', '?']})
+  call wilder#set_option('renderer', wilder#popupmenu_renderer({
+        \ 'highlighter': wilder#basic_highlighter(),
+        \ }))
+endif
+" }}}2
+
+" todo-comments {{{2
+if s:plug.is_installed("todo-comments.nvim")
+lua << EOF
+  require("todo-comments").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  }
+EOF
+endif
+" }}}2
+
+" nvim-colorizer {{{2
+if s:plug.is_installed("nvim-colorizer.lua")
+  lua require('colorizer').setup()
+endif
+" }}}2
+
+" nvim-notify {{{2
+if s:plug.is_installed("nvim-notify")
+  " debug
+  lua require("notify")("My super important message")
+endif
+" }}}2
+
 " }}}1
 
 
 " FileType settings {{{1
 
 " indent {{{2
+autocmd FileType java               setlocal expandtab    shiftwidth=4 softtabstop=4 tabstop=4
 autocmd FileType javascript         setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType javascriptreact    setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType typescript         setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2

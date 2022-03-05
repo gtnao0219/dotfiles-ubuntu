@@ -47,5 +47,10 @@ if [ -e "${HOME}/.cargo/env" ]; then
   source "${HOME}/.cargo/env"
 fi
 
+# Java
+export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
+export GRADLE_HOME="/opt/gradle/latest"
+export PATH="${GRADLE_HOME}/bin:${PATH}"
+
 export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
 
