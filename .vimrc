@@ -84,6 +84,7 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'aiya000/aho-bakaup.vim'
 Plug 'vim-jp/vimdoc-ja'
 Plug 'rcarriga/nvim-notify'
+Plug 'vim-scripts/yanktmp.vim'
 " }}}3
 
 
@@ -202,6 +203,15 @@ nnoremap <Leader>gs :<C-u>%s///g<Left><Left><Left>
 nnoremap <Leader>gS :<C-u>%s///gc<Left><Left><Left><Left>
 vnoremap <Leader>gs :s///g<Left><Left><Left>
 vnoremap <Leader>gS :s///gc<Left><Left><Left><Left>
+" }}}2 
+
+" Yank {{{2 
+nnoremap <silent> sy :call YanktmpYank()<CR>
+nnoremap <silent> sp :call YanktmpPaste_p()<CR>
+nnoremap <silent> sP :call YanktmpPaste_P()<CR>
+vnoremap <silent> sy :call YanktmpYank()<CR>
+vnoremap <silent> sp :call YanktmpPaste_p()<CR>
+vnoremap <silent> sP :call YanktmpPaste_P()<CR>
 " }}}2 
 
 " }}}1
