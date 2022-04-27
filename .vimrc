@@ -282,7 +282,7 @@ if s:plug.is_installed("coc.nvim")
   \, 'coc-lists'
   \, 'coc-markdownlint'
   \, 'coc-prettier'
-  \, 'coc-rls'
+  \, 'coc-rust-analyzer'
   \, 'coc-sh'
   \, 'coc-solargraph'
   \, 'coc-spell-checker'
