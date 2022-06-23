@@ -387,7 +387,6 @@ endif
 
 " fzf {{{2
 if s:plug.is_installed("fzf.vim")
-  let g:fzf_preview_command = 'bat --color=always --style=plain'
   nnoremap <silent> <Leader>P :Files<CR>
   nnoremap <silent> <Leader>G :GFiles?<CR>
   nnoremap <silent> <Leader>F :Rg<CR>

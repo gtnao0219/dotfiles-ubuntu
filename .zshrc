@@ -72,7 +72,7 @@ if whence todo-txt > /dev/null; then
 fi
 
 if whence batcat > /dev/null; then
-  alias bat="batcat"
+  alias bat="batcat --theme=Gruvbox-N"
 fi
 
 if whence fdfind > /dev/null; then

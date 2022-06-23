@@ -53,4 +53,5 @@ export GRADLE_HOME="/opt/gradle/latest"
 export PATH="${GRADLE_HOME}/bin:${PATH}"
 
 export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
+export BAT_THEME='Gruvbox-N'
 
