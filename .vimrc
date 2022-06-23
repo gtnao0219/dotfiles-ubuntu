@@ -269,6 +269,7 @@ endif
 if s:plug.is_installed("coc.nvim")
   let g:coc_global_extensions = [
   \  'coc-calc'
+  \, 'coc-clangd'
   \, 'coc-css'
   \, 'coc-docker'
   \, 'coc-eslint'
