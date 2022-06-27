@@ -20,6 +20,7 @@ Plug 'dense-analysis/ale'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'liuchengxu/vista.vim'
 " }}}3
 
 " Filer Languages {{{3
@@ -42,8 +43,10 @@ Plug 'lambdalisue/glyph-palette.vim'
 " }}}3
 
 " Textobj & Operator {{{3
+Plug 'mopp/vim-operator-convert-case'
 Plug 'machakann/vim-sandwich'
 Plug 'machakann/vim-swap'
+Plug 'kana/vim-operator-replace'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-operator-user'
 Plug 'kana/vim-textobj-entire' " ie ae
@@ -53,12 +56,27 @@ Plug 'rhysd/vim-textobj-ruby' " ir ar
 Plug 'mattn/vim-textobj-url' " iu au
 " }}}3
 
+" Move {{{3
+Plug 'andymass/vim-matchup'
+" }}}3
+
 " Appearance {{{3
-Plug 'sainnhe/gruvbox-material'
+Plug 'mhinz/vim-startify'
+Plug 'kwkarlwang/bufresize.nvim'
+Plug 'ryanoasis/vim-devicons'
+Plug 'norcalli/nvim-colorizer.lua'
+Plug 'kevinhwang91/nvim-bqf'
+Plug 'Yggdroot/indentLine'
+Plug 'mopp/smartnumber.vim'
+" StatusLine {{{4
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'Yggdroot/indentLine'
+" }}}4
+" ColorTheme {{{4
+Plug 'sainnhe/gruvbox-material'
+" }}}4
 " }}}3
+
 
 " Git {{{3
 Plug 'tpope/vim-fugitive'
@@ -72,7 +90,6 @@ Plug 'AndrewRadev/linediff.vim'
 Plug 'gelguy/wilder.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'folke/todo-comments.nvim'
-Plug 'norcalli/nvim-colorizer.lua'
 Plug 'tyru/vim-altercmd'
 Plug 'tpope/vim-commentary'
 Plug 'thinca/vim-quickrun'
@@ -206,12 +223,12 @@ vnoremap <Leader>gS :s///gc<Left><Left><Left><Left>
 " }}}2 
 
 " Yank {{{2 
-nnoremap <silent> sy :call YanktmpYank()<CR>
-nnoremap <silent> sp :call YanktmpPaste_p()<CR>
-nnoremap <silent> sP :call YanktmpPaste_P()<CR>
-vnoremap <silent> sy :call YanktmpYank()<CR>
-vnoremap <silent> sp :call YanktmpPaste_p()<CR>
-vnoremap <silent> sP :call YanktmpPaste_P()<CR>
+nnoremap <silent> <Leader>y :call YanktmpYank()<CR>
+nnoremap <silent> <Leader>p :call YanktmpPaste_p()<CR>
+nnoremap <silent> <Leader>P :call YanktmpPaste_P()<CR>
+vnoremap <silent> <Leader>y :call YanktmpYank()<CR>
+vnoremap <silent> <Leader>p :call YanktmpPaste_p()<CR>
+vnoremap <silent> <Leader>P :call YanktmpPaste_P()<CR>
 " }}}2 
 
 " }}}1
@@ -443,6 +460,11 @@ endif
 " wilder {{{2
 if s:plug.is_installed("wilder.nvim")
   call wilder#setup({'modes': [':', '/', '?']})
+  call wilder#setup({
+      \ 'modes': [':', '/', '?'],
+      \ 'next_key': '<c-j>',
+      \ 'previous_key': '<c-k>',
+      \ })
   call wilder#set_option('renderer', wilder#popupmenu_renderer({
         \ 'highlighter': wilder#basic_highlighter(),
         \ }))
@@ -474,8 +496,29 @@ if s:plug.is_installed("nvim-notify")
 endif
 " }}}2
 
-" }}}1
 
+" vista.vim {{{2
+if s:plug.is_installed("vista.vim")
+  let g:vista_default_executive = 'coc'
+  nnoremap <silent> <Leader>v <Cmd>Vista<CR>
+  autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+endif
+" }}}2
+
+" operator {{{2
+nmap <Leader>cl <Plug>(operator-convert-case-lower-camel)
+nmap <Leader>cu <Plug>(operator-convert-case-upper-camel)
+nmap <Leader>sl <Plug>(operator-convert-case-lower-snake)
+nmap <Leader>su <Plug>(operator-convert-case-upper-snake)
+vmap <Leader>cl <Plug>(operator-convert-case-lower-camel)
+vmap <Leader>cu <Plug>(operator-convert-case-upper-camel)
+vmap <Leader>sl <Plug>(operator-convert-case-lower-snake)
+vmap <Leader>su <Plug>(operator-convert-case-upper-snake)
+nmap _ <Plug>(operator-replace)
+vmap _ <Plug>(operator-replace)
+" }}}2
+
+" }}}1
 
 " FileType settings {{{1
 
