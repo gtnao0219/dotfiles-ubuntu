@@ -390,15 +390,10 @@ if s:plug.is_installed("ale")
   \ 'python': ['flake8'],
   \}
   let g:ale_fixers = {
-  \ 'ruby': ['rubocop'],
-  \ 'typescript': ['prettier', 'eslint'],
-  \ 'typescriptreact': ['prettier', 'eslint'],
-  \ 'javascript': ['prettier', 'eslint'],
-  \ 'javascriptreact': ['prettier', 'eslint'],
   \ 'python': ['autopep8', 'black', 'isort'],
   \}
   let g:ale_fix_on_save = 1
-  let g:ale_javascript_prettier_use_local_config = 1
+  " let g:ale_javascript_prettier_use_local_config = 1
   let g:rustfmt_autosave = 1
 endif
 " }}}2
