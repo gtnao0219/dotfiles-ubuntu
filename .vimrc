@@ -40,6 +40,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'hashivim/vim-terraform'
 " Plug 'rhysd/vim-fixjson'
 Plug 'mechatroner/rainbow_csv'
+Plug 'slim-template/vim-slim'
 " }}}3
 
 " Filer {{{3
@@ -63,6 +64,7 @@ Plug 'kana/vim-textobj-line' " il al
 Plug 'kana/vim-textobj-indent' " ii ai iI aI
 Plug 'rhysd/vim-textobj-ruby' " ir ar
 Plug 'mattn/vim-textobj-url' " iu au
+Plug 'kana/vim-textobj-datetime'
 " }}}3
 
 " Move {{{3
@@ -93,6 +95,7 @@ Plug 'lambdalisue/gina.vim'
 " }}}3
 
 " Utils {{{3
+Plug 'thinca/vim-qfreplace'
 Plug 'cohama/lexima.vim'
 Plug 'farmergreg/vim-lastplace'
 Plug 'AndrewRadev/linediff.vim'
@@ -117,6 +120,13 @@ call plug#end()
 " }}}2
 
 " }}}1
+
+" AutoCmd {{{ 1
+augroup vimrc
+  autocmd!
+augroup END
+command! -nargs=* AutoCmd autocmd vimrc <args>
+"}}} 1
 
 " Set Options {{{1
 
@@ -186,8 +196,8 @@ xnoremap <Leader> <Nop>
 " Replace {{{2 
 nnoremap ; :
 nnoremap : ;
-vnoremap ; :
-vnoremap : ;
+xnoremap ; :
+xnoremap : ;
 
 nnoremap <Leader>h ^
 nnoremap <Leader>l $
@@ -196,12 +206,12 @@ nnoremap <Leader>m %
 
 nnoremap k gk
 nnoremap j gj
-vnoremap k gk
-vnoremap j gj
+xnoremap k gk
+xnoremap j gj
 nnoremap gk k
 nnoremap gj j
-vnoremap gk k
-vnoremap gj j
+xnoremap gk k
+xnoremap gj j
 " }}}2 
 
 " Disable {{{2 
@@ -245,8 +255,8 @@ nnoremap <Leader>O :<C-u>for i in range(v:count1) \| call append(line('.')-1, ''
 nnoremap <silent> <Esc><Esc> <Cmd>nohlsearch<CR>
 nnoremap <Leader>gs :<C-u>%s///g<Left><Left><Left>
 nnoremap <Leader>gS :<C-u>%s///gc<Left><Left><Left><Left>
-vnoremap <Leader>gs :s///g<Left><Left><Left>
-vnoremap <Leader>gS :s///gc<Left><Left><Left><Left>
+xnoremap <Leader>gs :s///g<Left><Left><Left>
+xnoremap <Leader>gS :s///gc<Left><Left><Left><Left>
 " }}}2 
 
 " Yank {{{2 
@@ -254,9 +264,9 @@ nnoremap Y y$
 nnoremap <silent> <Leader>y <Esc><Cmd>call YanktmpYank()<CR>
 nnoremap <silent> <Leader>p <Esc><Cmd>call YanktmpPaste_p()<CR>
 nnoremap <silent> <Leader>P <Esc><Cmd>call YanktmpPaste_P()<CR>
-vnoremap <silent> <Leader>y <Esc><Cmd>call YanktmpYank()<CR>
-vnoremap <silent> <Leader>p <Esc><Cmd>call YanktmpPaste_p()<CR>
-vnoremap <silent> <Leader>P <Esc><Cmd>call YanktmpPaste_P()<CR>
+xnoremap <silent> <Leader>y <Esc><Cmd>call YanktmpYank()<CR>
+xnoremap <silent> <Leader>p <Esc><Cmd>call YanktmpPaste_p()<CR>
+xnoremap <silent> <Leader>P <Esc><Cmd>call YanktmpPaste_P()<CR>
 " }}}2 
 
 " Increment/Decrement {{{ 2
@@ -293,7 +303,6 @@ nnoremap <silent> <Leader>tl <Cmd>LocationListToggle<CR>
 " }}} 2
 
 " }}}1
-
 
 " Colorscheme {{{1
 colorscheme gruvbox-material
@@ -369,8 +378,6 @@ if s:plug.is_installed("coc.nvim")
   nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
   inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
   inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-
-  nnoremap <silent><nowait> <Leader>dl :<C-u>CocList diagnostics<cr>
   
   function s:show_documentation() abort
     if index(['vim', 'help'], &filetype) >= 0
@@ -383,14 +390,14 @@ if s:plug.is_installed("coc.nvim")
   function! s:coc_typescript_settings() abort
     nnoremap <silent> <buffer> <Leader>fm <Cmd>CocCommand eslint.executeAutofix<CR><Cmd>CocCommand prettier.formatFile<CR>
   endfunction
-  autocmd FileType typescript,typescriptreact call <SID>coc_typescript_settings()
+  AutoCmd FileType typescript,typescriptreact call <SID>coc_typescript_settings()
   
-  autocmd CursorHold * silent call CocActionAsync('highlight')
+  AutoCmd CursorHold * silent call CocActionAsync('highlight')
 endif
 " }}}2 
 
 " treesitter {{{2
-
+if s:plug.is_installed("nvim-treesitter")
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   highlight = {
@@ -399,6 +406,7 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = 'all'
 }
 EOF
+endif
 
 " }}}2
 
@@ -421,14 +429,12 @@ if s:plug.is_installed("fern.vim")
     nmap <silent> <buffer> <C-u> <Plug>(fern-action-preview:scroll:up:half)
   endfunction
   
-  augroup fern-settings
-    autocmd!
-    autocmd FileType fern call s:fern_settings()
-  augroup END
+  AutoCmd FileType fern call s:fern_settings()
 endif
 " }}}2 
 
 " ale {{{2
+" TODO: move to coc
 if s:plug.is_installed("ale")
   let g:ale_linters = {
   \ 'python': ['flake8'],
@@ -443,25 +449,28 @@ endif
 " }}}2
 
 " fzf {{{2
-if s:plug.is_installed("fzf.vim")
-  nnoremap <silent> <Leader>P :Files<CR>
-  nnoremap <silent> <Leader>G :GFiles?<CR>
-  nnoremap <silent> <Leader>F :Rg<CR>
-endif
+" if s:plug.is_installed("fzf.vim")
+"   nnoremap <silent> <Leader>P :Files<CR>
+"   nnoremap <silent> <Leader>G :GFiles?<CR>
+"   nnoremap <silent> <Leader>F :Rg<CR>
+" endif
 
 if s:plug.is_installed("fzf-preview.vim")
   nmap <Leader>f [fzf-p]
   xmap <Leader>f [fzf-p]
-  nnoremap <silent> [fzf-p]a  :<C-u>FzfPreviewFromResourcesRpc project_mru git<CR>
-  nnoremap <silent> [fzf-p]r  :<C-u>FzfPreviewProjectMruFilesRpc<CR>
-  nnoremap <silent> [fzf-p]w  :<C-u>FzfPreviewProjectMrwFilesRpc<CR>
-  nnoremap <silent> [fzf-p]gs :<C-u>FzfPreviewGitStatusRpc<CR>
+  nnoremap <silent> [fzf-p]a  :<C-u>FzfPreviewFromResourcesRpc project_mru git --experimental-fast<CR>
+  nnoremap <silent> [fzf-p]r  :<C-u>FzfPreviewProjectMruFilesRpc --experimental-fast<CR>
+  nnoremap <silent> [fzf-p]w  :<C-u>FzfPreviewProjectMrwFilesRpc --experimental-fast<CR>
+  nnoremap <silent> [fzf-p]gs :<C-u>FzfPreviewGitStatusRpc --experimental-fast<CR>
   nnoremap <silent> [fzf-p]ga :<C-u>FzfPreviewGitActionsRpc<CR>
+  nnoremap <silent> [fzf-p]gb :<C-u>FzfPreviewBlamePRRpc<CR>
   nnoremap <silent> [fzf-p]c  :<C-u>FzfPreviewChangesRpc<CR>
   nnoremap <silent> [fzf-p]/  <Cmd>FzfPreviewLinesRpc --resume --add-fzf-arg=--exact --add-fzf-arg=--no-sort<CR>
-  nnoremap          [fzf-p]gr :<C-u>FzfPreviewProjectGrepRpc<Space>
-  nnoremap <silent> [fzf-p]q  :<C-u>FzfPreviewQuickFixRpc<CR>
-  nnoremap <silent> [fzf-p]l  :<C-u>FzfPreviewLocationListRpc<CR>
+  nnoremap          [fzf-p]gr :<C-u>FzfPreviewProjectGrepRpc --experimental-fast<Space>
+  nnoremap <silent> [fzf-p]cm :<C-u>FzfPreviewCommandPaletteRpc --experimental-fast<CR>
+  nnoremap <silent> [fzf-p]q  :<C-u>FzfPreviewQuickFixRpc --experimental-fast<CR>
+  nnoremap <silent> [fzf-p]l  :<C-u>FzfPreviewLocationListRpc --experimental-fast<CR>
+  nnoremap <silent> [fzf-p]todo :<C-u>FzfPreviewTodoCommentsRpc --experimental-fast<CR>
   nnoremap <silent> [fzf-p]d  :<C-u>CocCommand fzf-preview.CocCurrentDiagnostics<CR>
   nnoremap <silent> [fzf-p]D  :<C-u>CocCommand fzf-preview.CocDiagnostics<CR>
   nnoremap <silent> [fzf-p]df :<C-u>CocCommand fzf-preview.CocDefinition<CR>
@@ -469,24 +478,6 @@ if s:plug.is_installed("fzf-preview.vim")
   nnoremap <silent> [fzf-p]p  <Cmd>CocCommand fzf-preview.Yankround --add-fzf-arg=--exact --add-fzf-arg=--no-sort<CR>
 
   let g:fzf_preview_command='batcat --color=always --plain --theme=Gruvbox-N {-1}'
-endif
-" }}}2
-
-" sandwich {{{2
-if s:plug.is_installed("vim-sandwich")
-  let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
-  let g:sandwich#recipes += [
-    \ {
-    \   'buns':     ['${', '}'],
-    \   'input':    ['$'],
-    \   'filetype': ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
-    \ },
-    \ {
-    \   'buns':     ['#{', '}'],
-    \   'input':    ['#'],
-    \   'filetype': ['ruby'],
-    \ }
-  \]
 endif
 " }}}2
 
@@ -498,9 +489,9 @@ endif
 " }}}2
 
 " undotree {{{2
-if s:plug.is_installed("undotree")
-  nnoremap <silent> <Leader>u <Cmd>UndotreeToggle<CR>
-endif
+" if s:plug.is_installed("undotree")
+"   nnoremap <silent> <Leader>u <Cmd>UndotreeToggle<CR>
+" endif
 " }}}2
 
 " ultisnips {{{2
@@ -532,9 +523,6 @@ endif
 if s:plug.is_installed("todo-comments.nvim")
 lua << EOF
   require("todo-comments").setup {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
   }
 EOF
 endif
@@ -546,66 +534,113 @@ if s:plug.is_installed("nvim-colorizer.lua")
 endif
 " }}}2
 
-" nvim-notify {{{2
-" if s:plug.is_installed("nvim-notify")
-"   " debug
-"   lua require("notify")("My super important message")
-" endif
-" }}}2
-
 " vista.vim {{{2
 if s:plug.is_installed("vista.vim")
   let g:vista_default_executive = 'coc'
   nnoremap <silent> <Leader>v <Cmd>Vista<CR>
-  autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+  AutoCmd VimEnter * call vista#RunForNearestMethodOrFunction()
 endif
 " }}}2
 
-" operator {{{2
+" lexima {{{ 2
+if s:plug.is_installed("cohama/lexima.vim")
+endif
+call lexima#add_rule({'char': '>', 'at': '(>\%#)', 'input': '<BS>() => {', 'input_after': '}', 'filetype': ['typescript', 'typescriptreact', 'javascript']})
+call lexima#add_rule({'char': '>', 'at': '([a-zA-Z]+>\%#)', 'input': '<BS> => {', 'input_after': '}', 'filetype': ['typescript', 'typescriptreact', 'javascript']})
+"}}} 2
+
+" operator/textobj {{{ 2
+
+" operator-convert-case {{{ 3
+if s:plug.is_installed("vim-operator-convert-case")
 nmap <Leader>cl <Plug>(operator-convert-case-lower-camel)
 nmap <Leader>cu <Plug>(operator-convert-case-upper-camel)
 nmap <Leader>sl <Plug>(operator-convert-case-lower-snake)
 nmap <Leader>su <Plug>(operator-convert-case-upper-snake)
-vmap <Leader>cl <Plug>(operator-convert-case-lower-camel)
-vmap <Leader>cu <Plug>(operator-convert-case-upper-camel)
-vmap <Leader>sl <Plug>(operator-convert-case-lower-snake)
-vmap <Leader>su <Plug>(operator-convert-case-upper-snake)
+nmap <Leader>tc <Plug>(operator-convert-case-toggle-upper-lower)
+xmap <Leader>cl <Plug>(operator-convert-case-lower-camel)
+xmap <Leader>cu <Plug>(operator-convert-case-upper-camel)
+xmap <Leader>sl <Plug>(operator-convert-case-lower-snake)
+xmap <Leader>su <Plug>(operator-convert-case-upper-snake)
+xmap <Leader>tc <Plug>(operator-convert-case-toggle-upper-lower)
+endif
+"}}} 3
+
+" vim-operator-replace {{{ 3
+if s:plug.is_installed("vim-operator-replace")
 nmap _ <Plug>(operator-replace)
-vmap _ <Plug>(operator-replace)
-" }}}2
+xmap _ <Plug>(operator-replace)
+endif
+"}}} 3
+
+" swap {{{ 3
+if s:plug.is_installed("vim-swap")
+nmap g< <Plug>(swap-prev)
+nmap g> <Plug>(swap-next)
+nmap gs <Plug>(swap-interactive)
+xmap g< <Plug>(swap-prev)
+xmap g> <Plug>(swap-next)
+xmap gs <Plug>(swap-interactive)
+
+nmap <Leader>i, <Plug>(swap-textobject-i)
+nmap <Leader>a, <Plug>(swap-textobject-a)
+xmap <Leader>i, <Plug>(swap-textobject-i)
+xmap <Leader>a, <Plug>(swap-textobject-a)
+endif
+"}}} 3
+
+" sandwich {{{3
+if s:plug.is_installed("vim-sandwich")
+  let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
+  let g:sandwich#recipes += [
+    \ {
+    \   'buns':     ['${', '}'],
+    \   'input':    ['$'],
+    \   'filetype': ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
+    \ },
+    \ {
+    \   'buns':     ['#{', '}'],
+    \   'input':    ['#'],
+    \   'filetype': ['ruby'],
+    \ }
+  \]
+endif
+" }}}3
+
+"}}} 2
 
 " }}}1
 
 " FileType settings {{{1
 
 " indent {{{2
-autocmd FileType java               setlocal expandtab    shiftwidth=4 softtabstop=4 tabstop=4
-autocmd FileType javascript         setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType javascriptreact    setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType typescript         setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType typescriptreact    setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType ruby               setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType python             setlocal expandtab    shiftwidth=4 softtabstop=4 tabstop=4
-autocmd FileType rust               setlocal expandtab    shiftwidth=4 softtabstop=4 tabstop=4
-autocmd FileType go                 setlocal noexpandtab  shiftwidth=4 softtabstop=4 tabstop=4
-autocmd FileType json               setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType markdown           setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType html               setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType css                setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType scss               setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType vim                setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType sh                 setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType zsh                setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+AutoCmd FileType java               setlocal expandtab    shiftwidth=4 softtabstop=4 tabstop=4
+AutoCmd FileType javascript         setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+AutoCmd FileType javascriptreact    setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+AutoCmd FileType typescript         setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+AutoCmd FileType typescriptreact    setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+AutoCmd FileType ruby               setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+AutoCmd FileType python             setlocal expandtab    shiftwidth=4 softtabstop=4 tabstop=4
+AutoCmd FileType rust               setlocal expandtab    shiftwidth=4 softtabstop=4 tabstop=4
+AutoCmd FileType go                 setlocal noexpandtab  shiftwidth=4 softtabstop=4 tabstop=4
+AutoCmd FileType json               setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+AutoCmd FileType markdown           setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+AutoCmd FileType html               setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+AutoCmd FileType css                setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+AutoCmd FileType scss               setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+AutoCmd FileType vim                setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+AutoCmd FileType sh                 setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+AutoCmd FileType zsh                setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
 " }}}2
 
 " iskeyword {{{2
-autocmd FileType html               setlocal iskeyword+=-
-autocmd FileType css                setlocal iskeyword+=- iskeyword+=#
-autocmd FileType scss               setlocal iskeyword+=- iskeyword+=# iskeyword+=@-@
-autocmd FileType ruby               setlocal iskeyword+=@-@ iskeyword+=! iskeyword+=? iskeyword+=&
-autocmd FileType vim                setlocal iskeyword+=-
-autocmd FileType sh                 setlocal iskeyword+=-
-autocmd FileType zsh                setlocal iskeyword+=-
+AutoCmd FileType html               setlocal iskeyword+=-
+AutoCmd FileType css                setlocal iskeyword+=- iskeyword+=#
+AutoCmd FileType scss               setlocal iskeyword+=- iskeyword+=# iskeyword+=@-@
+AutoCmd FileType ruby               setlocal iskeyword+=@-@ iskeyword+=! iskeyword+=? iskeyword+=&
+AutoCmd FileType vim                setlocal iskeyword+=-
+AutoCmd FileType sh                 setlocal iskeyword+=-
+AutoCmd FileType zsh                setlocal iskeyword+=-
 " }}}2
 
 " }}}1
