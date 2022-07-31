@@ -62,6 +62,7 @@ Plug 'kana/vim-operator-user'
 Plug 'kana/vim-textobj-entire' " ie ae
 Plug 'kana/vim-textobj-line' " il al
 Plug 'kana/vim-textobj-indent' " ii ai iI aI
+Plug 'thinca/vim-textobj-between'
 Plug 'rhysd/vim-textobj-ruby' " ir ar
 Plug 'mattn/vim-textobj-url' " iu au
 Plug 'kana/vim-textobj-datetime'
