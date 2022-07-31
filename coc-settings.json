@@ -58,8 +58,10 @@
   "coc.preferences.formatOnSaveFiletypes": [
     "cpp", "cc", "typescript", "typescriptreact", "javascript", "javascriptreact", "ruby"
   ],
-  "codeLens.enable": true,
   "solargraph.autoformat": true,
   "solargraph.diagnostics": true,
-  "solargraph.formatting": true
+  "solargraph.formatting": true,
+  "snippets.ultisnips.directories": [
+    "~/.vim/ultisnips"
+  ]
 }

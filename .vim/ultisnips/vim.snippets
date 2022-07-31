@@ -1,0 +1,11 @@
+snippet "marker"
+" ${1:Name} {{{ ${2:Num}
+$0
+"}}} ${1:Num}
+endsnippet
+
+snippet "is_installed"
+if s:plug.is_installed("${1:PlugName}")
+$0
+endif
+endsnippet

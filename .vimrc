@@ -1,3 +1,10 @@
+" Encoding {{{1
+set encoding=utf-8
+set fileencodings=utf-8,sjis,cp932,euc-jp
+set fileformats=unix,mac,dos
+scriptencoding utf-8
+" Encoding }}}1
+
 " PluginManager {{{1 
 
 " Init PluginManager {{{2
@@ -19,6 +26,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'liuchengxu/vista.vim'
 " }}}3
@@ -40,6 +48,7 @@ Plug 'lambdalisue/fern-git-status.vim'
 Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 Plug 'lambdalisue/nerdfont.vim'
 Plug 'lambdalisue/glyph-palette.vim'
+Plug 'yuki-yano/fern-preview.vim'
 " }}}3
 
 " Textobj & Operator {{{3
@@ -104,42 +113,60 @@ Plug 'rcarriga/nvim-notify'
 Plug 'vim-scripts/yanktmp.vim'
 " }}}3
 
-
 call plug#end()
-
 " }}}2
 
 " }}}1
 
-
 " Set Options {{{1
 
-set helplang=ja
-set encoding=utf-8
-
-set autoread
-set autoindent
-
-set number
+" Appearance {{{ 2
 set cursorline
-set showmatch
+set display=lastline
+set helplang=ja
+set list
+set listchars=tab:^\ ,trail:_,extends:>,precedes:<
+set number
+"set showtabline=2
+set synmaxcol=500
+set termguicolors
+"}}} Appearance
 
+" Indent {{{ 2
+set autoindent
+set breakindent
 set expandtab
-set tabstop=2
+set smartindent
 set shiftwidth=2
+set tabstop=2
+"}}} Indent
 
-set foldcolumn=1
-set nofoldenable
-set foldmethod=marker
-
+" Search {{{ 2
+set ignorecase
 set incsearch
 set hlsearch
-set ignorecase
-set smartindent
+set smartcase
+"}}} Search
 
+" Move {{{ 2
+set scrolloff=5
+set showmatch
+set matchpairs+=<:>
+set matchtime=1
+set virtualedit+=block
 set whichwrap=h,l
+" }}} 2
 
-set termguicolors
+" Folding {{{ 2
+set foldcolumn=1
+set foldmethod=marker
+set nofoldenable
+"}}} Folding
+
+" Misc {{{ 2
+set autoread
+set belloff=all
+"}}} Misc
 
 filetype plugin indent on
 
@@ -188,8 +215,8 @@ nnoremap <Leader>r <Cmd>source ${MYVIMRC}<CR>
 " }}}2 
 
 " Save {{{2 
-nnoremap <silent> <Leader>w <Cmd>update<CR>
-nnoremap <silent> <Leader>W <Cmd>update!<CR>
+nnoremap <Leader>w <Cmd>update<CR>
+nnoremap <Leader>W <Cmd>update!<CR>
 " }}}2 
 
 " Quit {{{2 
@@ -215,7 +242,7 @@ nnoremap <Leader>O :<C-u>for i in range(v:count1) \| call append(line('.')-1, ''
 " }}}2 
 
 " Search & Replace {{{2 
-nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR>
+nnoremap <silent> <Esc><Esc> <Cmd>nohlsearch<CR>
 nnoremap <Leader>gs :<C-u>%s///g<Left><Left><Left>
 nnoremap <Leader>gS :<C-u>%s///gc<Left><Left><Left><Left>
 vnoremap <Leader>gs :s///g<Left><Left><Left>
@@ -223,47 +250,56 @@ vnoremap <Leader>gS :s///gc<Left><Left><Left><Left>
 " }}}2 
 
 " Yank {{{2 
-nnoremap <silent> <Leader>y :call YanktmpYank()<CR>
-nnoremap <silent> <Leader>p :call YanktmpPaste_p()<CR>
-nnoremap <silent> <Leader>P :call YanktmpPaste_P()<CR>
-vnoremap <silent> <Leader>y :call YanktmpYank()<CR>
-vnoremap <silent> <Leader>p :call YanktmpPaste_p()<CR>
-vnoremap <silent> <Leader>P :call YanktmpPaste_P()<CR>
+nnoremap Y y$ 
+nnoremap <silent> <Leader>y <Esc><Cmd>call YanktmpYank()<CR>
+nnoremap <silent> <Leader>p <Esc><Cmd>call YanktmpPaste_p()<CR>
+nnoremap <silent> <Leader>P <Esc><Cmd>call YanktmpPaste_P()<CR>
+vnoremap <silent> <Leader>y <Esc><Cmd>call YanktmpYank()<CR>
+vnoremap <silent> <Leader>p <Esc><Cmd>call YanktmpPaste_p()<CR>
+vnoremap <silent> <Leader>P <Esc><Cmd>call YanktmpPaste_P()<CR>
 " }}}2 
+
+" Increment/Decrement {{{ 2
+nnoremap + <C-a>
+nnoremap - <C-x>
+"}}} Increment/Decrement
+
+" QuickFix {{{ 2
+nnoremap [q <Cmd>cprevious<CR>
+nnoremap ]q <Cmd>cnext<CR>
+function! s:quickfix_toggle() abort
+  let _ = winnr('$')
+  cclose
+  if _ == winnr('$')
+    botright copen
+  endif
+endfunction
+command! QuickfixToggle call <SID>quickfix_toggle()
+nnoremap <silent> <Leader>tq <Cmd>QuickfixToggle<CR>
+" }}} 2
+
+" LocationList {{{ 2
+nnoremap [l <Cmd>lprevious<CR>
+nnoremap ]l <Cmd>lnext<CR>
+function! s:location_list_toggle() abort
+  let _ = winnr('$')
+  lclose
+  if _ == winnr('$')
+    botright lopen
+  endif
+endfunction
+command! LocationListToggle call <SID>location_list_toggle()
+nnoremap <silent> <Leader>tl <Cmd>LocationListToggle<CR>
+" }}} 2
 
 " }}}1
 
 
 " Colorscheme {{{1
-
 colorscheme gruvbox-material
-
+let g:gruvbox_material_better_performance = 1
+let g:gruvbox_material_transparent_background = 1
 " }}} 1
-
-
-" Functions {{{1
-" let g:rpbcopy_on = 0
-" function! s:toggle_rpbcopy() abort
-"   if g:rpbcopy_on != 1
-"     g:rpbcopy_on = 1
-"   else
-"     g:rpbcopy_on = 0
-"   endif
-" endfunction
-" command! ToggleRpbcopy call <SID>toggle_rpbcopy()
-" nnoremap <Leader>c <Cmd>ToggleRpbcopy<CR>
-
-" function! s:rpbcopy_yanked(rows) abort
-"   " if g:rpbcopy_on != 1
-"   "   return
-"   " endif
-"   let str = shellescape(join(map(a:rows, "escape(v:val, '\')"), "\n"))
-"   call system("echo ".str." | rpbcopy")
-" endfunction
-" autocmd TextYankPost * call s:rpbcopy_yanked(v:event.regcontents)
-
-" }}}1
-
 
 " Plugin settings {{{1
 
@@ -307,9 +343,11 @@ if s:plug.is_installed("coc.nvim")
   \, 'coc-sql'
   \, 'coc-svg'
   \, 'coc-tsserver'
+  \, 'coc-ultisnips-select'
   \, 'coc-vimlsp'
   \, 'coc-word'
   \, 'coc-yaml'
+  \, 'coc-fzf-preview'
   \ ]
 
   inoremap <silent><expr> <C-c> coc#refresh()
@@ -323,6 +361,7 @@ if s:plug.is_installed("coc.nvim")
   nmap <silent> <Leader>ty <Plug>(coc-type-definition)
   nmap <silent> <Leader>rn <Plug>(coc-rename)
   nmap <silent> <Leader>fm <Plug>(coc-format)
+  nmap <silent> <Leader>gs <Plug>(coc-git-chunkinfo)
   nmap <silent> <Leader>gp <Plug>(coc-git-prevchunk)
   nmap <silent> <Leader>gn <Plug>(coc-git-nextchunk)
 
@@ -331,8 +370,7 @@ if s:plug.is_installed("coc.nvim")
   inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
   inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
 
-  nmap <Leader>ca <Plug>(coc-calc-result-append)
-  nmap <Leader>cr <Plug>(coc-calc-result-replace)
+  nnoremap <silent><nowait> <Leader>dl :<C-u>CocList diagnostics<cr>
   
   function s:show_documentation() abort
     if index(['vim', 'help'], &filetype) >= 0
@@ -341,6 +379,11 @@ if s:plug.is_installed("coc.nvim")
       call CocActionAsync('doHover')
     endif
   endfunction
+
+  function! s:coc_typescript_settings() abort
+    nnoremap <silent> <buffer> <Leader>fm <Cmd>CocCommand eslint.executeAutofix<CR><Cmd>CocCommand prettier.formatFile<CR>
+  endfunction
+  autocmd FileType typescript,typescriptreact call <SID>coc_typescript_settings()
   
   autocmd CursorHold * silent call CocActionAsync('highlight')
 endif
@@ -367,8 +410,9 @@ endif
 
 " fern {{{2
 if s:plug.is_installed("fern.vim")
-  nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=40<CR>
+  nnoremap <silent> <C-n> :Fern . -reveal=% -drawer -toggle<CR>
   let g:fern#default_hidden=1
+  let g:fern#drawer_width = 40
   let g:fern#renderer = 'nerdfont'
   function! s:fern_settings() abort
     nmap <silent> <buffer> p     <Plug>(fern-action-preview:toggle)
@@ -403,6 +447,28 @@ if s:plug.is_installed("fzf.vim")
   nnoremap <silent> <Leader>P :Files<CR>
   nnoremap <silent> <Leader>G :GFiles?<CR>
   nnoremap <silent> <Leader>F :Rg<CR>
+endif
+
+if s:plug.is_installed("fzf-preview.vim")
+  nmap <Leader>f [fzf-p]
+  xmap <Leader>f [fzf-p]
+  nnoremap <silent> [fzf-p]a  :<C-u>FzfPreviewFromResourcesRpc project_mru git<CR>
+  nnoremap <silent> [fzf-p]r  :<C-u>FzfPreviewProjectMruFilesRpc<CR>
+  nnoremap <silent> [fzf-p]w  :<C-u>FzfPreviewProjectMrwFilesRpc<CR>
+  nnoremap <silent> [fzf-p]gs :<C-u>FzfPreviewGitStatusRpc<CR>
+  nnoremap <silent> [fzf-p]ga :<C-u>FzfPreviewGitActionsRpc<CR>
+  nnoremap <silent> [fzf-p]c  :<C-u>FzfPreviewChangesRpc<CR>
+  nnoremap <silent> [fzf-p]/  <Cmd>FzfPreviewLinesRpc --resume --add-fzf-arg=--exact --add-fzf-arg=--no-sort<CR>
+  nnoremap          [fzf-p]gr :<C-u>FzfPreviewProjectGrepRpc<Space>
+  nnoremap <silent> [fzf-p]q  :<C-u>FzfPreviewQuickFixRpc<CR>
+  nnoremap <silent> [fzf-p]l  :<C-u>FzfPreviewLocationListRpc<CR>
+  nnoremap <silent> [fzf-p]d  :<C-u>CocCommand fzf-preview.CocCurrentDiagnostics<CR>
+  nnoremap <silent> [fzf-p]D  :<C-u>CocCommand fzf-preview.CocDiagnostics<CR>
+  nnoremap <silent> [fzf-p]df :<C-u>CocCommand fzf-preview.CocDefinition<CR>
+  nnoremap <silent> [fzf-p]rf :<C-u>CocCommand fzf-preview.CocReferences<CR>
+  nnoremap <silent> [fzf-p]p  <Cmd>CocCommand fzf-preview.Yankround --add-fzf-arg=--exact --add-fzf-arg=--no-sort<CR>
+
+  let g:fzf_preview_command='batcat --color=always --plain --theme=Gruvbox-N {-1}'
 endif
 " }}}2
 
@@ -440,9 +506,6 @@ endif
 " ultisnips {{{2
 if s:plug.is_installed("ultisnips")
   let g:UltiSnipsSnippetDirectories  = ['~/.vim/ultisnips']
-  let g:UltiSnipsExpandTrigger='<c-j>'
-  let g:UltiSnipsJumpForwardTrigger="<c-b>"
-  let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 endif
 " }}}2
 
@@ -454,7 +517,6 @@ endif
 
 " wilder {{{2
 if s:plug.is_installed("wilder.nvim")
-  call wilder#setup({'modes': [':', '/', '?']})
   call wilder#setup({
       \ 'modes': [':', '/', '?'],
       \ 'next_key': '<c-j>',
@@ -485,12 +547,11 @@ endif
 " }}}2
 
 " nvim-notify {{{2
-if s:plug.is_installed("nvim-notify")
-  " debug
-  lua require("notify")("My super important message")
-endif
+" if s:plug.is_installed("nvim-notify")
+"   " debug
+"   lua require("notify")("My super important message")
+" endif
 " }}}2
-
 
 " vista.vim {{{2
 if s:plug.is_installed("vista.vim")
