@@ -431,7 +431,12 @@ if s:plug.is_installed("fern.vim")
   endfunction
   
   AutoCmd FileType fern call s:fern_settings()
+
+  if s:plug.is_installed("glyph-palette.vim")
+    AutoCmd FileType fern call glyph_palette#apply()
+  endif
 endif
+
 " }}}2 
 
 " ale {{{2
