@@ -28,6 +28,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
 Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 Plug 'liuchengxu/vista.vim'
 " }}}3
 
@@ -402,6 +403,9 @@ if s:plug.is_installed("nvim-treesitter")
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   highlight = {
+    enable = true
+  },
+  context_commentstring = {
     enable = true
   },
   ensure_installed = 'all'
