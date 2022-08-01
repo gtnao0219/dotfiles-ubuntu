@@ -465,8 +465,8 @@ if s:plug.is_installed("fzf-preview.vim")
   nmap <Leader>f [fzf-p]
   xmap <Leader>f [fzf-p]
   nnoremap <silent> [fzf-p]a  :<C-u>FzfPreviewFromResourcesRpc project_mru git --experimental-fast<CR>
-  nnoremap <silent> [fzf-p]r  :<C-u>FzfPreviewProjectMruFilesRpc --experimental-fast<CR>
-  nnoremap <silent> [fzf-p]w  :<C-u>FzfPreviewProjectMrwFilesRpc --experimental-fast<CR>
+  nnoremap <silent> [fzf-p]r  :<C-u>FzfPreviewProjectMruFilesRpc --experimental-fast --add-fzf-arg=--no-sort<CR>
+  nnoremap <silent> [fzf-p]w  :<C-u>FzfPreviewProjectMrwFilesRpc --experimental-fast --add-fzf-arg=--no-sort<CR>
   nnoremap <silent> [fzf-p]gs :<C-u>FzfPreviewGitStatusRpc --experimental-fast<CR>
   nnoremap <silent> [fzf-p]ga :<C-u>FzfPreviewGitActionsRpc<CR>
   nnoremap <silent> [fzf-p]gb :<C-u>FzfPreviewBlamePRRpc<CR>
@@ -481,7 +481,7 @@ if s:plug.is_installed("fzf-preview.vim")
   nnoremap <silent> [fzf-p]D  :<C-u>CocCommand fzf-preview.CocDiagnostics<CR>
   nnoremap <silent> [fzf-p]df :<C-u>CocCommand fzf-preview.CocDefinition<CR>
   nnoremap <silent> [fzf-p]rf :<C-u>CocCommand fzf-preview.CocReferences<CR>
-  nnoremap <silent> [fzf-p]p  <Cmd>CocCommand fzf-preview.Yankround --add-fzf-arg=--exact --add-fzf-arg=--no-sort<CR>
+  nnoremap <silent> [fzf-p]p  <Cmd>CocCommand fzf-preview.Yankround --add-fzf-arg=--no-sort<CR>
 
   let g:fzf_preview_command='batcat --color=always --plain --theme=Gruvbox-N {-1}'
 endif
