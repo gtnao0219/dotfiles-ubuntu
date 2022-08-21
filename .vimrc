@@ -8,38 +8,39 @@ scriptencoding utf-8
 " PluginManager {{{1 
 
 " Init PluginManager {{{2
-
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   autocmd VimEnter * PlugInstall --sync | source ${MYVIMRC}
 endif
-
 " }}}2
 
 " Install plugins {{{2
-
 call plug#begin()
 
-" Filer IDE {{{3
+" IDE {{{3
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 Plug 'liuchengxu/vista.vim'
+Plug 'github/copilot.vim'
 " }}}3
 
-" Filer Languages {{{3
+" FuzzyFinder {{{ 3
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
+"}}} 3
+
+" Languages {{{3
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
+Plug 'windwp/nvim-ts-autotag'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'rust-lang/rust.vim'
 Plug 'hashivim/vim-terraform'
-" Plug 'rhysd/vim-fixjson'
 Plug 'mechatroner/rainbow_csv'
 Plug 'slim-template/vim-slim'
 " }}}3
@@ -54,42 +55,51 @@ Plug 'yuki-yano/fern-preview.vim'
 " }}}3
 
 " Textobj & Operator {{{3
-Plug 'mopp/vim-operator-convert-case'
-Plug 'machakann/vim-sandwich'
-Plug 'machakann/vim-swap'
-Plug 'kana/vim-operator-replace'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-operator-user'
+Plug 'kana/vim-operator-replace'
 Plug 'kana/vim-textobj-entire' " ie ae
 Plug 'kana/vim-textobj-line' " il al
 Plug 'kana/vim-textobj-indent' " ii ai iI aI
-Plug 'thinca/vim-textobj-between'
-Plug 'rhysd/vim-textobj-ruby' " ir ar
-Plug 'mattn/vim-textobj-url' " iu au
 Plug 'kana/vim-textobj-datetime'
+Plug 'machakann/vim-sandwich'
+Plug 'machakann/vim-swap'
+Plug 'mopp/vim-operator-convert-case'
+Plug 'thinca/vim-textobj-between'
+Plug 'mattn/vim-textobj-url' " iu au
+Plug 'rhysd/vim-textobj-ruby' " ir ar
 " }}}3
 
 " Move {{{3
 Plug 'andymass/vim-matchup'
+Plug 'phaazon/hop.nvim'
+" }}}3
+
+" Edit {{{3
+Plug 'jsborjesson/vim-uppercase-sql'
+Plug 'osyo-manga/vim-jplus'
+Plug 't9md/vim-textmanip'
+Plug 'osyo-manga/vim-trip'
 " }}}3
 
 " Appearance {{{3
-Plug 'mhinz/vim-startify'
-Plug 'kwkarlwang/bufresize.nvim'
-Plug 'ryanoasis/vim-devicons'
 Plug 'norcalli/nvim-colorizer.lua'
-Plug 'kevinhwang91/nvim-bqf'
 Plug 'Yggdroot/indentLine'
 Plug 'mopp/smartnumber.vim'
+Plug 'kevinhwang91/nvim-bqf'
+Plug 'mtdl9/vim-log-highlighting'
+Plug 'ryanoasis/vim-devicons'
+Plug 'mhinz/vim-startify'
+
 " StatusLine {{{4
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " }}}4
+
 " ColorTheme {{{4
 Plug 'sainnhe/gruvbox-material'
 " }}}4
 " }}}3
-
 
 " Git {{{3
 Plug 'tpope/vim-fugitive'
@@ -97,6 +107,7 @@ Plug 'lambdalisue/gina.vim'
 " }}}3
 
 " Utils {{{3
+Plug 'mtth/scratch.vim'
 Plug 'thinca/vim-qfreplace'
 Plug 'cohama/lexima.vim'
 Plug 'farmergreg/vim-lastplace'
@@ -107,6 +118,7 @@ Plug 'folke/todo-comments.nvim'
 Plug 'tyru/vim-altercmd'
 Plug 'tpope/vim-commentary'
 Plug 'thinca/vim-quickrun'
+Plug 'lambdalisue/vim-quickrun-neovim-job'
 Plug 'mbbill/undotree'
 Plug 'LeafCage/yankround.vim'
 Plug 'machakann/vim-highlightedyank'
@@ -123,11 +135,13 @@ call plug#end()
 
 " }}}1
 
-" AutoCmd {{{ 1
+" Helper {{{ 1
+" AutoCmd {{{ 2
 augroup vimrc
   autocmd!
 augroup END
 command! -nargs=* AutoCmd autocmd vimrc <args>
+"}}} 2
 "}}} 1
 
 " Set Options {{{1
@@ -186,7 +200,6 @@ let g:python3_host_prog = system('echo -n $(which python3)')
 
 " }}}1
 
-
 " Keymaps {{{1
 
 " Prefix {{{2 
@@ -236,10 +249,22 @@ nnoremap <Leader>q <Cmd>quit<CR>
 nnoremap <Leader>Q <Cmd>quit!<CR>
 " }}}2 
 
-" Back {{{2 
+" Back {{{2
 inoremap <C-h> <BS>
 cnoremap <C-h> <BS>
-" }}}2 
+" }}}2
+
+" Indent {{{2
+nnoremap < <<
+nnoremap > >>
+xnoremap < <gv
+xnoremap > >gv
+" }}}2
+
+" Paste command mode {{{2
+vnoremap <C-p> y:<C-r>"
+cnoremap <C-p> <C-r>"
+" }}}2
 
 " Resize window {{{2 
 nnoremap <silent> <Left> <Cmd>vertical resize -5<Cr>
@@ -272,8 +297,8 @@ xnoremap <silent> <Leader>P <Esc><Cmd>call YanktmpPaste_P()<CR>
 " }}}2 
 
 " Increment/Decrement {{{ 2
-nnoremap + <C-a>
-nnoremap - <C-x>
+" nnoremap + <C-a>
+" nnoremap - <C-x>
 "}}} Increment/Decrement
 
 " QuickFix {{{ 2
@@ -305,12 +330,6 @@ nnoremap <silent> <Leader>tl <Cmd>LocationListToggle<CR>
 " }}} 2
 
 " }}}1
-
-" Colorscheme {{{1
-colorscheme gruvbox-material
-let g:gruvbox_material_better_performance = 1
-let g:gruvbox_material_transparent_background = 1
-" }}} 1
 
 " Plugin settings {{{1
 
@@ -360,6 +379,19 @@ if s:plug.is_installed("coc.nvim")
   \, 'coc-yaml'
   \, 'coc-fzf-preview'
   \ ]
+  call coc#config('suggest.completionItemKindLabels.variable', "\Uff71b")
+  call coc#config('suggest.completionItemKindLabels.function', "\Uff794")
+  call coc#config('suggest.completionItemKindLabels.constant', "\Uff8ff")
+  call coc#config('suggest.completionItemKindLabels.method', "\Uff6a6")
+  call coc#config('suggest.completionItemKindLabels.struct', "\Uffb44")
+  call coc#config('suggest.completionItemKindLabels.enum', "\Uff435")
+  call coc#config('suggest.completionItemKindLabels.class', "\Uff9a9")
+  call coc#config('suggest.completionItemKindLabels.interface', "\Uffa52")
+  call coc#config('suggest.completionItemKindLabels.module', "\Uff668")
+  call coc#config('suggest.completionItemKindLabels.property', "\Uffab6")
+  call coc#config('suggest.completionItemKindLabels.field', "\Uff93d")
+  call coc#config('suggest.completionItemKindLabels.typeParameter', "\Uff278")
+  call coc#config('suggest.completionItemKindLabels.default', "\Uff29c")
 
   inoremap <silent><expr> <C-c> coc#refresh()
   inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
@@ -411,7 +443,12 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = 'all'
 }
 EOF
+
+if s:plug.is_installed("nvim-ts-autotag")
+  lua require('nvim-ts-autotag').setup()
 endif
+endif
+
 
 " }}}2
 
@@ -466,27 +503,31 @@ endif
 " endif
 
 if s:plug.is_installed("fzf-preview.vim")
-  nmap <Leader>f [fzf-p]
-  xmap <Leader>f [fzf-p]
-  nnoremap <silent> [fzf-p]a  :<C-u>FzfPreviewFromResourcesRpc project_mru git --experimental-fast<CR>
-  nnoremap <silent> [fzf-p]r  :<C-u>FzfPreviewProjectMruFilesRpc --experimental-fast --add-fzf-arg=--no-sort<CR>
-  nnoremap <silent> [fzf-p]w  :<C-u>FzfPreviewProjectMrwFilesRpc --experimental-fast --add-fzf-arg=--no-sort<CR>
-  nnoremap <silent> [fzf-p]gs :<C-u>FzfPreviewGitStatusRpc --experimental-fast<CR>
-  nnoremap <silent> [fzf-p]ga :<C-u>FzfPreviewGitActionsRpc<CR>
-  nnoremap <silent> [fzf-p]gb :<C-u>FzfPreviewBlamePRRpc<CR>
-  nnoremap <silent> [fzf-p]c  :<C-u>FzfPreviewChangesRpc<CR>
-  nnoremap <silent> [fzf-p]/  <Cmd>FzfPreviewLinesRpc --resume --add-fzf-arg=--exact --add-fzf-arg=--no-sort<CR>
-  nnoremap          [fzf-p]gr :<C-u>FzfPreviewProjectGrepRpc --experimental-fast<Space>
-  nnoremap <silent> [fzf-p]cm :<C-u>FzfPreviewCommandPaletteRpc --experimental-fast<CR>
-  nnoremap <silent> [fzf-p]q  :<C-u>FzfPreviewQuickFixRpc --experimental-fast<CR>
-  nnoremap <silent> [fzf-p]l  :<C-u>FzfPreviewLocationListRpc --experimental-fast<CR>
-  nnoremap <silent> [fzf-p]todo :<C-u>FzfPreviewTodoCommentsRpc --experimental-fast<CR>
-  nnoremap <silent> [fzf-p]d  :<C-u>CocCommand fzf-preview.CocCurrentDiagnostics<CR>
-  nnoremap <silent> [fzf-p]D  :<C-u>CocCommand fzf-preview.CocDiagnostics<CR>
-  nnoremap <silent> [fzf-p]df :<C-u>CocCommand fzf-preview.CocDefinition<CR>
-  nnoremap <silent> [fzf-p]rf :<C-u>CocCommand fzf-preview.CocReferences<CR>
-  nnoremap <silent> [fzf-p]p  <Cmd>CocCommand fzf-preview.Yankround --add-fzf-arg=--no-sort<CR>
+  nmap <Leader>f <Plug>(fzf-p)
+  xmap <Leader>f <Plug>(fzf-p)
+  nnoremap <Plug>(fzf-p) <Nop>
+  xnoremap <Plug>(fzf-p) <Nop>
+  nnoremap <silent> <Plug>(fzf-p)aa :<C-u>FzfPreviewFromResourcesRpc project_mru git --experimental-fast<CR>
+  nnoremap <silent> <Plug>(fzf-p)ar :<C-u>FzfPreviewProjectMruFilesRpc --experimental-fast --add-fzf-arg=--no-sort<CR>
+  nnoremap <silent> <Plug>(fzf-p)aw :<C-u>FzfPreviewProjectMrwFilesRpc --experimental-fast --add-fzf-arg=--no-sort<CR>
+  nnoremap <silent> <Plug>(fzf-p)gs :<C-u>FzfPreviewGitStatusRpc --experimental-fast<CR>
+  nnoremap <silent> <Plug>(fzf-p)ga :<C-u>FzfPreviewGitActionsRpc<CR>
+  nnoremap <silent> <Plug>(fzf-p)gb :<C-u>FzfPreviewBlamePRRpc<CR>
+  nnoremap <silent> <Plug>(fzf-p)c  :<C-u>FzfPreviewChangesRpc<CR>
+  nnoremap <silent> <Plug>(fzf-p)/  <Cmd>FzfPreviewLinesRpc --resume --add-fzf-arg=--exact --add-fzf-arg=--no-sort<CR>
+  nnoremap          <Plug>(fzf-p)gr :<C-u>FzfPreviewProjectGrepRpc --experimental-fast<Space>
+  xnoremap          <Plug>(fzf-p)gr y:<C-u>FzfPreviewProjectGrepRpc --experimental-fast<Space> <C-r>"
+  nnoremap <silent> <Plug>(fzf-p)cm :<C-u>FzfPreviewCommandPaletteRpc --experimental-fast<CR>
+  nnoremap <silent> <Plug>(fzf-p)q  :<C-u>FzfPreviewQuickFixRpc --experimental-fast<CR>
+  nnoremap <silent> <Plug>(fzf-p)l  :<C-u>FzfPreviewLocationListRpc --experimental-fast<CR>
+  nnoremap <silent> <Plug>(fzf-p)todo :<C-u>FzfPreviewTodoCommentsRpc --experimental-fast<CR>
+  nnoremap <silent> <Plug>(fzf-p)d  :<C-u>CocCommand fzf-preview.CocCurrentDiagnostics<CR>
+  nnoremap <silent> <Plug>(fzf-p)D  :<C-u>CocCommand fzf-preview.CocDiagnostics<CR>
+  nnoremap <silent> <Plug>(fzf-p)df :<C-u>CocCommand fzf-preview.CocDefinition<CR>
+  nnoremap <silent> <Plug>(fzf-p)rf :<C-u>CocCommand fzf-preview.CocReferences<CR>
+  nnoremap <silent> <Plug>(fzf-p)p  <Cmd>CocCommand fzf-preview.Yankround --add-fzf-arg=--no-sort<CR>
 
+  let g:fzf_preview_use_dev_icons = 1
   let g:fzf_preview_command='batcat --color=always --plain --theme=Gruvbox-N {-1}'
 endif
 " }}}2
@@ -538,15 +579,49 @@ EOF
 endif
 " }}}2
 
-" nvim-colorizer {{{2
-if s:plug.is_installed("nvim-colorizer.lua")
-  lua require('colorizer').setup()
-endif
-" }}}2
-
 " vista.vim {{{2
 if s:plug.is_installed("vista.vim")
+  let g:vista_icon_indent = ["󳄀󳄂 ", "󳄁󳄂 "]
   let g:vista_default_executive = 'coc'
+  " ref: https://github.com/miiton/Cica/issues/45
+  let g:vista#renderer#icons = {
+            \ 'func':           "\Uff794",
+            \ 'function':       "\Uff794",
+            \ 'functions':      "\Uff794",
+            \ 'var':            "\Uff71b",
+            \ 'variable':       "\Uff71b",
+            \ 'variables':      "\Uff71b",
+            \ 'const':          "\Uff8ff",
+            \ 'constant':       "\Uff8ff",
+            \ 'method':         "\Uff6a6",
+            \ 'package':        "\Ufe612",
+            \ 'packages':       "\Ufe612",
+            \ 'enum':           "\Uff435",
+            \ 'enumerator':     "\Uff435",
+            \ 'module':         "\Uff668",
+            \ 'modules':        "\Uff668",
+            \ 'type':           "\Ufe22b",
+            \ 'typedef':        "\Ufe22b",
+            \ 'types':          "\Ufe22b",
+            \ 'field':          "\Uff93d",
+            \ 'fields':         "\Uff93d",
+            \ 'macro':          "\Uff8a3",
+            \ 'macros':         "\Uff8a3",
+            \ 'map':            "\Uffb44",
+            \ 'class':          "\Uff9a9",
+            \ 'augroup':        "\Uffb44",
+            \ 'struct':         "\Uffb44",
+            \ 'union':          "\Uffacd",
+            \ 'member':         "\Uff02b",
+            \ 'target':         "\Uff893",
+            \ 'property':       "\Uffab6",
+            \ 'interface':      "\Uffa52",
+            \ 'namespace':      "\Uff475",
+            \ 'subroutine':     "\Uff915",
+            \ 'implementation': "\Uff87a",
+            \ 'typeParameter':  "\Uff278",
+            \ 'default':        "\Uff29c"
+            \ }
   nnoremap <silent> <Leader>v <Cmd>Vista<CR>
   AutoCmd VimEnter * call vista#RunForNearestMethodOrFunction()
 endif
@@ -562,43 +637,44 @@ call lexima#add_rule({'char': '>', 'at': '([a-zA-Z]+>\%#)', 'input': '<BS> => {'
 " operator/textobj {{{ 2
 
 " operator-convert-case {{{ 3
+
 if s:plug.is_installed("vim-operator-convert-case")
-nmap <Leader>cl <Plug>(operator-convert-case-lower-camel)
-nmap <Leader>cu <Plug>(operator-convert-case-upper-camel)
-nmap <Leader>sl <Plug>(operator-convert-case-lower-snake)
-nmap <Leader>su <Plug>(operator-convert-case-upper-snake)
-nmap <Leader>tc <Plug>(operator-convert-case-toggle-upper-lower)
-xmap <Leader>cl <Plug>(operator-convert-case-lower-camel)
-xmap <Leader>cu <Plug>(operator-convert-case-upper-camel)
-xmap <Leader>sl <Plug>(operator-convert-case-lower-snake)
-xmap <Leader>su <Plug>(operator-convert-case-upper-snake)
-xmap <Leader>tc <Plug>(operator-convert-case-toggle-upper-lower)
+  nmap <Leader>cl <Plug>(operator-convert-case-lower-camel)
+  nmap <Leader>cu <Plug>(operator-convert-case-upper-camel)
+  nmap <Leader>sl <Plug>(operator-convert-case-lower-snake)
+  nmap <Leader>su <Plug>(operator-convert-case-upper-snake)
+  nmap <Leader>tc <Plug>(operator-convert-case-toggle-upper-lower)
+  xmap <Leader>cl <Plug>(operator-convert-case-lower-camel)
+  xmap <Leader>cu <Plug>(operator-convert-case-upper-camel)
+  xmap <Leader>sl <Plug>(operator-convert-case-lower-snake)
+  xmap <Leader>su <Plug>(operator-convert-case-upper-snake)
+  xmap <Leader>tc <Plug>(operator-convert-case-toggle-upper-lower)
 endif
+
 "}}} 3
 
 " vim-operator-replace {{{ 3
+
 if s:plug.is_installed("vim-operator-replace")
-nmap _ <Plug>(operator-replace)
-xmap _ <Plug>(operator-replace)
+  nmap _ <Plug>(operator-replace)
+  xmap _ <Plug>(operator-replace)
 endif
 "}}} 3
-
 " swap {{{ 3
 if s:plug.is_installed("vim-swap")
-nmap g< <Plug>(swap-prev)
-nmap g> <Plug>(swap-next)
-nmap gs <Plug>(swap-interactive)
-xmap g< <Plug>(swap-prev)
-xmap g> <Plug>(swap-next)
-xmap gs <Plug>(swap-interactive)
+  nmap g< <Plug>(swap-prev)
+  nmap g> <Plug>(swap-next)
+  nmap gs <Plug>(swap-interactive)
+  xmap g< <Plug>(swap-prev)
+  xmap g> <Plug>(swap-next)
+  xmap gs <Plug>(swap-interactive)
 
-nmap <Leader>i, <Plug>(swap-textobject-i)
-nmap <Leader>a, <Plug>(swap-textobject-a)
-xmap <Leader>i, <Plug>(swap-textobject-i)
-xmap <Leader>a, <Plug>(swap-textobject-a)
+  nmap <Leader>i, <Plug>(swap-textobject-i)
+  nmap <Leader>a, <Plug>(swap-textobject-a)
+  xmap <Leader>i, <Plug>(swap-textobject-i)
+  xmap <Leader>a, <Plug>(swap-textobject-a)
 endif
 "}}} 3
-
 " sandwich {{{3
 if s:plug.is_installed("vim-sandwich")
   let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
@@ -616,31 +692,154 @@ if s:plug.is_installed("vim-sandwich")
   \]
 endif
 " }}}3
-
-" startify {{{3
-if s:plug.is_installed("vim-startify")
-let g:startify_change_to_dir = 0
-let g:startify_lists = [
-  \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
-  \ ]
-endif
-let g:startify_custom_header = [
-      \' ██████╗████████╗███╗   ██╗ █████╗  ██████╗     ██╗   ██╗██╗███╗   ███╗',
-      \'██╔════╝╚══██╔══╝████╗  ██║██╔══██╗██╔═══██╗    ██║   ██║██║████╗ ████║',
-      \'██║  ███╗  ██║   ██╔██╗ ██║███████║██║   ██║    ██║   ██║██║██╔████╔██║',
-      \'██║   ██║  ██║   ██║╚██╗██║██╔══██║██║   ██║    ╚██╗ ██╔╝██║██║╚██╔╝██║',
-      \'╚██████╔╝  ██║   ██║ ╚████║██║  ██║╚██████╔╝     ╚████╔╝ ██║██║ ╚═╝ ██║',
-      \' ╚═════╝   ╚═╝   ╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝       ╚═══╝  ╚═╝╚═╝     ╚═╝',
-      \]
-" }}}3
-
 "}}} 2
 
+" hop.nvim
+if s:plug.is_installed("hop.nvim")
+lua << EOF
+require'hop'.setup()
+EOF
+  nnoremap <Leader>hc <Cmd>HopChar1<CR>
+  nnoremap <Leader>hl <Cmd>HopLine<CR>
+  nnoremap <Leader>hw <Cmd>HopWord<CR>
+endif
+
+" vim-jplus
+if s:plug.is_installed("vim-jplus")
+  nmap J <Plug>(jplus)
+  vmap J <Plug>(jplus)
+  nmap <Leader>J <Plug>(jplus-input)
+  vmap <Leader>J <Plug>(jplus-input)
+endif
+
+" scratch.vim
+if s:plug.is_installed("scratch.vim")
+  let g:scratch_filetype = 'markdown'
+  let g:scratch_height = 10
+  let g:scratch_autohide = 0
+  let g:scratch_no_mappings = 1
+  nmap <Leader>memo <Cmd>Scratch<CR>
+endif
+
+" vim-textmanip
+if s:plug.is_installed("vim-textmanip")
+  xmap <C-j> <Plug>(textmanip-move-down)
+  xmap <C-k> <Plug>(textmanip-move-up)
+  xmap <C-h> <Plug>(textmanip-move-left)
+  xmap <C-l> <Plug>(textmanip-move-right)
+endif
+
+" vim-trip
+if s:plug.is_installed("vim-trip")
+  nmap + <Plug>(trip-increment)
+  nmap - <Plug>(trip-decrement)
+endif
+
+" vim-quickrun
+if s:plug.is_installed("vim-quickrun")
+  let s:quickrun_hook = {}
+  let g:quickrun_notify_success_message = ''
+  let g:quickrun_notify_error_message = ''
+    
+  function! s:quickrun_hook.on_success(session, context) abort
+    let g:quickrun_notify_success_message = 'Success ' . a:session.config.command
+    if s:plug.is_installed("vim-quickrun")
+      lua require('notify')(vim.g.quickrun_notify_success_message, 'info', { title = ' QuickRun' })
+    endif
+  endfunction
+
+  function! s:quickrun_hook.on_failure(session, context) abort
+    let g:quickrun_notify_error_message = 'Error ' . a:session.config.command
+    if s:plug.is_installed("vim-quickrun")
+      lua require('notify')(vim.g.quickrun_notify_error_message, 'error', { title = ' QuickRun' })
+    endif
+  endfunction
+
+  function! s:quickrun_hook.sweep() abort
+    let g:quickrun_notify_success_message = ''
+    let g:quickrun_notify_error_message = ''
+  endfunction
+
+  let g:quickrun_config = {
+      \   '_' : {
+      \     'outputter/error/success': 'buffer',
+      \     'outputter/error/error': 'quickfix',
+      \     'outputter/buffer/opener': ':botright 15split',
+      \     'outputter/buffer/into': 1,
+      \     'hooks': [s:quickrun_hook],
+      \   },
+      \ }
+
+  if s:plug.is_installed("vim-quickrun-neovim-job")
+    let g:quickrun_config._.runner = 'neovim_job'
+  endif
+endif
+
+lua require("notify").setup({ background_colour = "#282828" })
+
+" Appearance {{{2
+" nvim-colorizer.lua {{{3
+if s:plug.is_installed("nvim-colorizer.lua")
+  lua require('colorizer').setup()
+endif
+" }}}3
+
+" indentLine {{{ 3
+if s:plug.is_installed("indentLine")
+  let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+  let g:indentLine_bufTypeExclude = ['help', 'terminal', 'fern']
+endif
+"}}} 3
+
+" smartnumber.vim {{{3
+if s:plug.is_installed("smartnumber.vim")
+  let g:snumber_enable_startup = 1
+  nnoremap <Leader>n <Cmd>SNumbersToggleRelative<CR>
+endif
+" }}}3
+
+if s:plug.is_installed("nvim-bqf")
+lua <<EOF
+require'bqf'.setup {
+  auto_resize_height = true,
+  preview = {
+    border_chars = {'┃', '┃', '━', '━', '┏', '┓', '┗', '┛', '█'},
+  },
+  func_map = {
+    pscrollup = "<C-u>",
+    pscrolldown = "<C-d>"
+  }
+}
+EOF
+endif
+
+" vim-startify {{{3
+if s:plug.is_installed("vim-startify")
+  let g:startify_change_to_dir = 0
+  let g:startify_lists = [
+    \ { 'type': 'dir', 'header': ['   MRU '. getcwd()] },
+    \ ]
+  let g:startify_custom_header = [
+        \'@gtnao',
+        \'██╗   ██╗██╗███╗   ███╗',
+        \'██║   ██║██║████╗ ████║',
+        \'██║   ██║██║██╔████╔██║',
+        \'╚██╗ ██╔╝██║██║╚██╔╝██║',
+        \' ╚████╔╝ ██║██║ ╚═╝ ██║',
+        \'  ╚═══╝  ╚═╝╚═╝     ╚═╝',
+        \]
+  if s:plug.is_installed("glyph-palette.vim")
+    AutoCmd FileType startify call glyph_palette#apply()
+  endif
+endif
+" }}}3
+"}}} 2
 " }}}1
 
-" FileType settings {{{1
+" FileType Settings {{{1
 
-" indent {{{2
+" Indent {{{2
+
 AutoCmd FileType java               setlocal expandtab    shiftwidth=4 softtabstop=4 tabstop=4
 AutoCmd FileType javascript         setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
 AutoCmd FileType javascriptreact    setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
@@ -658,9 +857,11 @@ AutoCmd FileType scss               setlocal expandtab    shiftwidth=2 softtabst
 AutoCmd FileType vim                setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
 AutoCmd FileType sh                 setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
 AutoCmd FileType zsh                setlocal expandtab    shiftwidth=2 softtabstop=2 tabstop=2
+
 " }}}2
 
 " iskeyword {{{2
+
 AutoCmd FileType html               setlocal iskeyword+=-
 AutoCmd FileType css                setlocal iskeyword+=- iskeyword+=#
 AutoCmd FileType scss               setlocal iskeyword+=- iskeyword+=# iskeyword+=@-@
@@ -668,7 +869,41 @@ AutoCmd FileType ruby               setlocal iskeyword+=@-@ iskeyword+=! iskeywo
 AutoCmd FileType vim                setlocal iskeyword+=-
 AutoCmd FileType sh                 setlocal iskeyword+=-
 AutoCmd FileType zsh                setlocal iskeyword+=-
+
+" }}}2
+
+" HTML escape characters {{{2
+
+function! s:map_html_keys() abort
+  inoremap <silent> <buffer> \\ \
+  inoremap <silent> <buffer> \& &amp;
+  inoremap <silent> <buffer> \< &lt;
+  inoremap <silent> <buffer> \> &gt;
+  inoremap <silent> <buffer> \<Space> &nbsp;
+  inoremap <silent> <buffer> \' &#39;
+  inoremap <silent> <buffer> \" &quot;
+endfunction
+AutoCmd FileType html,slim,javascriptreact,typescriptreact call <SID>map_html_keys()
+
+" }}}2
+
+" quit {{{2
+
+AutoCmd FileType qf nnoremap <silent> <nowait> <buffer> q <Cmd>quit<CR>
+AutoCmd FileType help nnoremap <silent> <nowait> <buffer> q <Cmd>quit<CR>
+
 " }}}2
 
 " }}}1
+
+" Colorscheme {{{1
+
+let g:gruvbox_material_better_performance = 1
+let g:gruvbox_material_transparent_background = 1
+let g:gruvbox_material_background = 'hard'
+let g:gruvbox_material_enable_bold = 1
+
+colorscheme gruvbox-material
+
+" }}} 1
 

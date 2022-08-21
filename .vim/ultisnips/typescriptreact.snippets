@@ -31,11 +31,11 @@ const ${1:Name} = styled.div\`
 endsnippet
 
 snippet state "useState hooks"
-const [${1:state}, set${1/\w+/\u$0/}] = React.useState(${2:default_value})
+const [${1:state}, set${1/\w+/\u$0/}] = useState(${2:default_value})
 endsnippet
 
 snippet effect "useEffect hooks"
-React.useEffect(() => {
+useEffect(() => {
 	${1:body}
 }, [${2:deps}])
 endsnippet
