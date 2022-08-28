@@ -6,49 +6,57 @@
     "border": true
   },
   "suggest.completionItemKindLabels": {
-		"keyword": "\uf1de",
-		"value": "\uf89f",
-		"operator": "\u03a8",
-		"constructor": "\uf0ad",
-		"reference": "\ufa46",
-		"text": "\ue612",
-		"enumMember": "\uf02b",
-		"color": "\ue22b",
-		"unit": "\uf475",
-		"event": "\ufacd",
-		"file": "\uf723",
-		"folder": "\uf114",
-		"snippet": "\ue60b"
-	},
+    "keyword": "\uf1de",
+    "value": "\uf89f",
+    "operator": "\u03a8",
+    "constructor": "\uf0ad",
+    "reference": "\ufa46",
+    "text": "\ue612",
+    "enumMember": "\uf02b",
+    "color": "\ue22b",
+    "unit": "\uf475",
+    "event": "\ufacd",
+    "file": "\uf723",
+    "folder": "\uf114",
+    "snippet": "\ue60b"
+  },
   "diagnostic.floatConfig": {
     "border": true
   },
-	"languageserver": {
-		"terraform": {
-			"command": "terraform-ls",
-			"args": [
-				"serve"
-			],
-			"filetypes": [
-				"terraform",
-				"tf"
-			],
-			"initializationOptions": {},
-			"settings": {}
-		}
-	},
+  "languageserver": {
+    "terraform": {
+      "command": "terraform-ls",
+      "args": ["serve"],
+      "filetypes": ["terraform", "tf"],
+      "initializationOptions": {},
+      "settings": {}
+    }
+  },
   "diagnostic.messageDelay": 0,
   "diagnostic.errorSign": "",
   "diagnostic.warningSign": "",
   "diagnostic.infoSign": "",
   "diagnostic.hintSign": "",
-  "coc.preferences.formatOnSaveFiletypes": [
-    "cpp", "cc", "typescript", "typescriptreact", "javascript", "javascriptreact", "ruby"
-  ],
+  "diagnostic-languageserver.filetypes": {
+    "python": ["flake8"]
+  },
+  "diagnostic-languageserver.formatFiletypes": {
+    "python": ["black"]
+  },
+  "diagnostic-languageserver.linters": {
+    "flake8": {
+      "command": "flake8"
+    }
+  },
+  "diagnostic-languageserver.formatters": {
+    "black": {
+      "command": "black",
+      "args": ["--quiet", "-"]
+    }
+  },
+  "coc.preferences.formatOnSaveFiletypes": ["*"],
   "solargraph.autoformat": true,
   "solargraph.diagnostics": true,
   "solargraph.formatting": true,
-  "snippets.ultisnips.directories": [
-    "~/.vim/ultisnips"
-  ]
+  "snippets.ultisnips.directories": ["~/.vim/ultisnips"]
 }

@@ -22,11 +22,17 @@ call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
-Plug 'dense-analysis/ale'
 Plug 'liuchengxu/vista.vim'
 Plug 'gelguy/wilder.nvim'
 Plug 'sirver/ultisnips'
 Plug 'github/copilot.vim'
+" }}}3
+
+" Denops {{{3
+Plug 'vim-denops/denops.vim'
+Plug 'Shougo/ddc.vim'
+Plug 'vim-skk/skkeleton'
+
 " }}}3
 
 " FuzzyFinder {{{ 3
@@ -98,8 +104,10 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
 
 " StatusLine {{{4
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
+Plug 'shinchu/lightline-gruvbox.vim'
 " }}}4
 
 " ColorTheme {{{4
@@ -355,6 +363,7 @@ if s:plug.is_installed("coc.nvim")
   \  'coc-calc'
   \, 'coc-clangd'
   \, 'coc-css'
+  \, 'coc-diagnostic'
   \, 'coc-docker'
   \, 'coc-eslint'
   \, 'coc-git'
@@ -371,7 +380,7 @@ if s:plug.is_installed("coc.nvim")
   \, 'coc-sh'
   \, 'coc-solargraph'
   \, 'coc-spell-checker'
-  \, 'coc-sql'
+  \, 'coc-sqlfluff'
   \, 'coc-svg'
   \, 'coc-tsserver'
   \, 'coc-ultisnips-select'
@@ -449,21 +458,6 @@ if s:plug.is_installed("nvim-ts-autotag")
   lua require('nvim-ts-autotag').setup()
 endif
 
-endif
-" }}}3
-
-" ale {{{3
-" TODO: move to coc
-if s:plug.is_installed("ale")
-  let g:ale_linters = {
-  \ 'python': ['flake8'],
-  \}
-  let g:ale_fixers = {
-  \ 'python': ['autopep8', 'black', 'isort'],
-  \}
-  let g:ale_fix_on_save = 1
-  " let g:ale_javascript_prettier_use_local_config = 1
-  let g:rustfmt_autosave = 1
 endif
 " }}}3
 
@@ -581,6 +575,7 @@ if s:plug.is_installed("fern.vim")
   endfunction
   
   AutoCmd FileType fern call s:fern_settings()
+  AutoCmd FileType fern set nonumber
 
   if s:plug.is_installed("glyph-palette.vim")
     AutoCmd FileType fern call glyph_palette#apply()
@@ -717,14 +712,14 @@ endif
 
 " indentLine {{{ 3
 if s:plug.is_installed("indentLine")
-  let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+  let g:indentLine_char_list = ['┊']
   let g:indentLine_bufTypeExclude = ['help', 'terminal', 'fern']
 endif
 "}}} 3
 
 " smartnumber.vim {{{3
 if s:plug.is_installed("smartnumber.vim")
-  let g:snumber_enable_startup = 1
+  " let g:snumber_enable_startup = 1
   nnoremap <Leader>n <Cmd>SNumbersToggleRelative<CR>
 endif
 " }}}3
@@ -779,6 +774,82 @@ endif
 " airline {{{3
 if s:plug.is_installed("vim-airline-themes")
   let g:airline_theme = "base16_gruvbox_dark_hard"
+endif
+" }}}3
+
+" lightline.vim {{{3
+if s:plug.is_installed("lightline.vim")
+  let g:lightline = {
+          \ 'colorscheme': 'gruvbox',
+          \ 'mode_map': {'c': 'NORMAL'},
+          \ 'active': {
+          \   'left': [ [ 'error', 'mode', 'paste' ], [ 'readonly', 'fugitive', 'filename', 'modified' ] ],
+          \ },
+          \ 'component_function': {
+          \   'modified': 'LightlineModified',
+          \   'readonly': 'LightlineReadonly',
+          \   'fugitive': 'LightlineFugitive',
+          \   'filename': 'LightlineFilename',
+          \   'fileformat': 'LightlineFileformat',
+          \   'filetype': 'LightlineFiletype',
+          \   'fileencoding': 'LightlineFileencoding',
+          \   'mode': 'LightlineMode'
+          \ },
+          \ 'component_expand': {
+          \   'syntastic': 'LightlineCocError',
+          \ },
+          \ 'component_type': {
+            \ 'syntastic': 'error',
+          \ },
+          \ 'separator': { 'left': '', 'right': '' },
+          \ 'subseparator': { 'left': '', 'right': '' }
+          \ }
+  function! LightlineModified()
+    return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+  endfunction
+  
+  function! LightlineReadonly()
+    return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? 'x' : ''
+  endfunction
+  
+  function! LightlineFilename()
+    return ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
+          \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+          \  &ft == 'unite' ? unite#get_status_string() :
+          \  &ft == 'vimshell' ? vimshell#get_status_string() :
+          \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+          \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
+  endfunction
+  
+  function! LightlineFugitive()
+    if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
+      return fugitive#head()
+    else
+      return ''
+    endif
+  endfunction
+  
+  function! LightlineFileformat()
+    return winwidth(0) > 70 ? &fileformat : ''
+  endfunction
+  
+  function! LightlineFiletype()
+    return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+  endfunction
+  
+  function! LightlineFileencoding()
+    return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
+  endfunction
+  
+  function! LightlineMode()
+    return winwidth(0) > 60 ? lightline#mode() : ''
+  endfunction
+
+  function! LightlineCocError() abort
+    return b:coc_diagnostic_info['error'] != 0 ? ' ' . b:coc_diagnostic_info['error'] : ''
+  endfunction
+
+  set noshowmode
 endif
 " }}}3
 
@@ -917,13 +988,11 @@ AutoCmd FileType help nnoremap <silent> <nowait> <buffer> q <Cmd>quit<CR>
 " }}}1
 
 " Colorscheme {{{1
-
 let g:gruvbox_material_better_performance = 1
 let g:gruvbox_material_transparent_background = 1
 let g:gruvbox_material_background = 'hard'
 let g:gruvbox_material_enable_bold = 1
 
 colorscheme gruvbox-material
-
-" }}} 1
+" }}}1
 
